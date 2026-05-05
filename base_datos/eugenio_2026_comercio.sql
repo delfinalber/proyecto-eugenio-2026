@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-05-2026 a las 14:36:57
+-- Tiempo de generación: 05-05-2026 a las 17:15:03
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -71,6 +71,32 @@ CREATE TABLE `departamento_join` (
   `presupuesto_departamento` int(7) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
+--
+-- Volcado de datos para la tabla `departamento_join`
+--
+
+INSERT INTO `departamento_join` (`codigo_departamento`, `nombre_departemento`, `presupuesto_departamento`) VALUES
+(1, 'Ventas', 850000),
+(2, 'Compras', 620000),
+(3, 'Logistica', 740000),
+(4, 'Recursos Humanos', 500000),
+(5, 'Finanzas', 930000),
+(6, 'Contabilidad', 780000),
+(7, 'Marketing', 690000),
+(8, 'Tecnologia', 990000),
+(9, 'Soporte Tecnico', 560000),
+(10, 'Calidad', 610000),
+(11, 'Produccion', 970000),
+(12, 'Investigacion', 880000),
+(13, 'Innovacion', 920000),
+(14, 'Comercio Exterior', 830000),
+(15, 'Servicio al Cliente', 640000),
+(16, 'Operaciones', 910000),
+(17, 'Planeacion', 700000),
+(18, 'Legal', 580000),
+(19, 'Auditoria', 760000),
+(20, 'Administracion', 660000);
+
 -- --------------------------------------------------------
 
 --
@@ -125,6 +151,32 @@ CREATE TABLE `empleado_join` (
   `apellido2_join` varchar(100) NOT NULL,
   `codigo_departamento` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `empleado_join`
+--
+
+INSERT INTO `empleado_join` (`codigo_join`, `nif_join`, `nombre_join`, `apellido1_join`, `apellido2_join`, `codigo_departamento`) VALUES
+(1, '10000001A', 'Juan', 'Perez', 'Lopez', 1),
+(2, '10000002B', 'Maria', 'Gomez', 'Rojas', 2),
+(3, '10000003C', 'Carlos', 'Martinez', 'Diaz', 3),
+(4, '10000004D', 'Ana', 'Rodriguez', 'Torres', 4),
+(5, '10000005E', 'Luis', 'Hernandez', 'Vargas', 5),
+(6, '10000006F', 'Paula', 'Jimenez', 'Castro', 6),
+(7, '10000007G', 'Andres', 'Moreno', 'Suarez', 7),
+(8, '10000008H', 'Sofia', 'Ruiz', 'Mendoza', 8),
+(9, '10000009I', 'Diego', 'Alvarez', 'Ortega', 9),
+(10, '10000010J', 'Valentina', 'Romero', 'Peña', 10),
+(11, '10000011K', 'Mateo', 'Navarro', 'Silva', 11),
+(12, '10000012L', 'Camila', 'Reyes', 'Pardo', 12),
+(13, '10000013M', 'Javier', 'Santos', 'Quintero', 13),
+(14, '10000014N', 'Daniela', 'Cruz', 'Rincon', 14),
+(15, '10000015O', 'Felipe', 'Guerrero', 'Salazar', 15),
+(16, '10000016P', 'Laura', 'Campos', 'Benitez', 16),
+(17, '10000017Q', 'Nicolas', 'Molina', 'Arias', 17),
+(18, '10000018R', 'Isabella', 'Delgado', 'Acosta', 18),
+(19, '10000019S', 'Samuel', 'Ibarra', 'Valencia', 19),
+(20, '10000020T', 'Gabriela', 'Cortes', 'Mejia', 20);
 
 -- --------------------------------------------------------
 
@@ -228,7 +280,8 @@ ALTER TABLE `elementos_linea`
 -- Indices de la tabla `empleado_join`
 --
 ALTER TABLE `empleado_join`
-  ADD PRIMARY KEY (`codigo_join`);
+  ADD PRIMARY KEY (`codigo_join`),
+  ADD KEY `empleado_join_ibfk_1` (`codigo_departamento`);
 
 --
 -- Indices de la tabla `factura`
@@ -257,13 +310,13 @@ ALTER TABLE `cliente`
 -- AUTO_INCREMENT de la tabla `departamento_join`
 --
 ALTER TABLE `departamento_join`
-  MODIFY `codigo_departamento` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `codigo_departamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `empleado_join`
 --
 ALTER TABLE `empleado_join`
-  MODIFY `codigo_join` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `codigo_join` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `producto`
@@ -281,6 +334,12 @@ ALTER TABLE `producto`
 ALTER TABLE `elementos_linea`
   ADD CONSTRAINT `elementos_linea_ibfk_1` FOREIGN KEY (`id_factura`) REFERENCES `factura` (`id_factura`),
   ADD CONSTRAINT `elementos_linea_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`);
+
+--
+-- Filtros para la tabla `empleado_join`
+--
+ALTER TABLE `empleado_join`
+  ADD CONSTRAINT `empleado_join_ibfk_1` FOREIGN KEY (`codigo_departamento`) REFERENCES `departamento_join` (`codigo_departamento`);
 
 --
 -- Filtros para la tabla `factura`
