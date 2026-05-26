@@ -3,7 +3,7 @@
 include('conexion.php');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-	header('Location: index.html');
+	header('Location: ./Carlos/index.html');
 	exit();
 }
 
@@ -30,7 +30,7 @@ if (isset($link) && $link) {
 	mysqli_stmt_store_result($stmt);
 
 	if (mysqli_stmt_num_rows($stmt) > 0) {
-		header('Location: netflix.html');
+		header('Location: ./Carlos/index.html');
 		mysqli_stmt_close($stmt);
 		mysqli_close($link);
 		exit();

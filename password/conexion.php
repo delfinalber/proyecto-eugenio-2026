@@ -2,6 +2,7 @@
 <?php
 
 //Conexion por procedimientos
+
         $link = mysqli_connect("localhost","root","","eugenio_2026_comercio");
 
         if(!$link){
