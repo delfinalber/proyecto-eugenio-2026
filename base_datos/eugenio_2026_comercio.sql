@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-05-2026 a las 17:15:03
+-- Tiempo de generación: 26-05-2026 a las 17:19:07
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.0.30
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -252,6 +252,26 @@ INSERT INTO `producto` (`id_producto`, `nom_producto`, `precio_unidad_producto`,
 (14, 'Proyector HD', 990000, 6, 'Electrónica', 35000, 6),
 (15, 'UPS 1200VA', 380000, 14, 'Electrónica', 12000, 14);
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `users`
+--
+
+CREATE TABLE `users` (
+  `id_users` int(11) NOT NULL,
+  `usuario_users` varchar(100) NOT NULL,
+  `contrasena_users` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `users`
+--
+
+INSERT INTO `users` (`id_users`, `usuario_users`, `contrasena_users`) VALUES
+(1, 'alber-delfin', 'alber-delfin123'),
+(2, 'delfin', 'delfin123');
+
 --
 -- Índices para tablas volcadas
 --
@@ -297,6 +317,12 @@ ALTER TABLE `producto`
   ADD PRIMARY KEY (`id_producto`);
 
 --
+-- Indices de la tabla `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id_users`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -323,6 +349,12 @@ ALTER TABLE `empleado_join`
 --
 ALTER TABLE `producto`
   MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT de la tabla `users`
+--
+ALTER TABLE `users`
+  MODIFY `id_users` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas

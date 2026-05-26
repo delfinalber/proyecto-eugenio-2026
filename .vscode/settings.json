@@ -19,6 +19,7 @@
         "contraseña",
         "cuenta",
         "Daniela",
+        "delfinnetflix",
         "denegado",
         "departamento",
         "Diaz",
@@ -27,6 +28,7 @@
         "empleado",
         "Ergonómica",
         "Escritorio",
+        "Explorar",
         "Externo",
         "fallida",
         "Fernanda",
@@ -34,6 +36,7 @@
         "Impresora",
         "Inalámbrico",
         "incorrectos",
+        "Iniciar",
         "Jiménez",
         "Láser",
         "María",
@@ -62,11 +65,13 @@
         "Rincon",
         "Rodallega",
         "Sebastián",
+        "sesion",
         "Silla",
         "Teclado",
         "Telecomunicaciones",
         "Teléfono",
         "Valentina",
-        "Volcado"
+        "Volcado",
+        "Volver"
     ]
 }
