@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Iniciar sesion | DelfinNetflix</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<div class="grain"></div>
+
+	<div class="app">
+		<header class="topbar">
+			<div class="topbar-content">
+				<a class="logo" href="delfinnetflix.html">DelfinNetflix</a>
+				<div class="top-actions">
+					<a class="btn btn-ghost" href="delfinnetflix.html">Volver</a>
+					<a class="btn btn-primary" href="#">Iniciar sesion</a>
+				</div>
+			</div>
+		</header>
+
+		<main class="login-wrap">
+			<section class="login-shell">
+				<h1>Iniciar sesion</h1>
+				<p class="subtitle">Ingresa con tu usuario y contrasena para continuar.</p>
+
+				<form action="login.php" method="POST" name="formulario">
+					<div class="field">
+						<label for="usuario">Usuario</label>
+						<input type="text" id="usuario" name="usuario" required>
+					</div>
+
+					<div class="field">
+						<label for="contrasena">Contrasena</label>
+						<input type="password" id="contrasena" name="contrasena" required>
+					</div>
+
+					<button class="submit" type="submit">Entrar</button>
+				</form>
+
+				<a class="back" href="delfinnetflix.html">Volver a la cartelera</a>
+			</section>
+		</main>
+	</div>
+</body>
+</html>
