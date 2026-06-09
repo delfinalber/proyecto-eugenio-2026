@@ -1,0 +1,14 @@
+/*
+ * Copyright (c) 2026 . All rights reserved.
+ */
+
+body {
+	margin: 0;
+}
+
+.banner-img {
+	width: 100%;
+	height: auto;
+	display: block;
+}
+
