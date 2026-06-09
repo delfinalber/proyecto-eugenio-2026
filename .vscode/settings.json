@@ -78,5 +78,6 @@
         "Valentina",
         "Volcado",
         "Volver"
-    ]
+    ],
+    "explorer.compactFolders": false
 }
