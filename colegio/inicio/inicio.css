@@ -12,17 +12,14 @@ body {
 	display: block;
 }
 
-#carouselExampleAutoplaying .carousel-inner {
-	aspect-ratio: 16 / 9;
-}
-
 #carouselExampleAutoplaying {
 	width: 100%;
 }
 
+#carouselExampleAutoplaying .carousel-inner,
 #carouselExampleAutoplaying .carousel-item,
 #carouselExampleAutoplaying .carousel-item img {
-	height: 100%;
+	height: var(--media-height);
 }
 
 #carouselExampleAutoplaying .carousel-item img {
@@ -32,7 +29,12 @@ body {
 }
 
 .media-row {
+	--media-height: 260px;
 	align-items: stretch;
+}
+
+.media-row > div {
+	height: var(--media-height);
 }
 
 .video-panel {
@@ -45,7 +47,8 @@ body {
 	display: flex;
 	flex: 1 1 auto;
 	width: 100%;
-	aspect-ratio: 16 / 9;
+	height: 505px;
+	height: var(--media-height);
 	background-color: #000;
 }
 
@@ -58,28 +61,86 @@ body {
 }
 
 @media (min-width: 992px) {
-	.media-row > div {
-		display: flex;
-	}
-
-	#carouselExampleAutoplaying,
-	#carouselExampleAutoplaying .carousel-inner,
-	#carouselExampleAutoplaying .carousel-item {
-		height: 100%;
-	}
-
-	#carouselExampleAutoplaying .carousel-inner {
-		aspect-ratio: auto;
+	.media-row {
+		--media-height: 420px;
 	}
 
 	.video-panel {
-		height: 100%;
+		height: var(--media-height);
 	}
 
 	.video-frame {
-		height: 100%;
-		min-height: 100%;
-		aspect-ratio: auto;
+		height: var(--media-height);
 	}
 }
+
+.site-footer {
+	margin-top: 2rem;
+	padding: 2.2rem 0 1rem;
+	background-color: #2f5970;
+	color: #e8f1f5;
+}
+
+.footer-top {
+	padding-bottom: 1.5rem;
+	border-bottom: 1px solid rgba(232, 241, 245, 0.45);
+}
+
+.footer-title {
+	margin-bottom: 0.9rem;
+	font-size: 1rem;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.footer-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.footer-list li + li {
+	margin-top: 0.45rem;
+}
+
+.footer-list a {
+	color: #e8f1f5;
+	text-decoration: none;
+}
+
+.footer-list a:hover {
+	text-decoration: underline;
+}
+
+.social-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
+.social-links a {
+	width: 2rem;
+	height: 2rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid rgba(232, 241, 245, 0.7);
+	border-radius: 999px;
+	color: #ffffff;
+	text-decoration: none;
+	font-weight: 700;
+	font-size: 0.8rem;
+}
+
+.social-links a:hover {
+	background-color: rgba(255, 255, 255, 0.16);
+}
+
+.footer-bottom {
+	padding-top: 0.9rem;
+	text-align: center;
+	font-size: 0.8rem;
+	color: rgba(232, 241, 245, 0.95);
+}
+
 
