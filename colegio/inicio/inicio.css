@@ -205,6 +205,20 @@ button.btn.btn-primary[data-bs-target^="#collapseWidthExample-"] {
 	}
 }
 
+.collapse-container {
+	overflow: hidden;
+	text-align: justify;
+}
+
+.collapse-height {
+	overflow: hidden;
+	text-align: justify;
+}
+
+.collapse-container-3 {
+	overflow: hidden;
+	text-align: justify;
+}
 .site-footer {
 	margin-top: 2rem;
 	padding: 2.2rem 0 1rem;
