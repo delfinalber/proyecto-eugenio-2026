@@ -103,6 +103,10 @@ a:focus {
 	filter: brightness(0) invert(1);
 }
 
+#accordionExample .accordion-body {
+	text-align: justify;
+}
+
 button.btn.btn-primary[data-bs-target^="#collapseWidthExample-"] {
 	--bs-btn-color: #ffffff;
 	--bs-btn-bg: #287a69;
@@ -204,6 +208,7 @@ button.btn.btn-primary[data-bs-target^="#collapseWidthExample-"] {
 		height: var(--media-height);
 	}
 }
+
 
 .collapse-container {
 	overflow: hidden;
