@@ -1,0 +1,395 @@
+/*
+ * Copyright (c) 2026 . All rights reserved.
+ */
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.banner {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.hero-row {
+    --hero-height: clamp(230px, 24vw, 360px);
+}
+
+.hero-banner-card {
+    height: var(--hero-height);
+    border-radius: 14px;
+    overflow: hidden;
+    border: 2px solid #b9e3f0;
+    border-top: 5px solid #f4cf3a;
+    box-shadow: 0 10px 20px rgba(7, 46, 40, 0.22);
+}
+
+.hero-banner-card .banner {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-video-card {
+    height: var(--hero-height);
+}
+
+.nav-banner {
+    --bs-navbar-color: #f5f9fb;
+    --bs-navbar-hover-color: #ffd84d;
+    --bs-navbar-brand-color: #f5f9fb;
+    --bs-navbar-brand-hover-color: #ffd84d;
+    --bs-navbar-toggler-border-color: rgba(245, 249, 251, 0.45);
+    --bs-navbar-toggler-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28245,249,251,0.95%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2.3' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    background: linear-gradient(90deg, #0b4f43 0%, #0b6757 45%, #0a7a66 100%);
+    border-top: 3px solid #f4cf3a;
+    border-bottom: 2px solid #b9e3f0;
+}
+
+.nav-banner .navbar-brand,
+.nav-banner .nav-link,
+.nav-banner .navbar-toggler-icon {
+    color: #f5f9fb;
+    font-weight: 600;
+}
+
+.nav-banner .navbar-brand {
+    font-family: "Montserrat", "Trebuchet MS", sans-serif;
+    font-size: clamp(1rem, 1.7vw, 1.45rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 0 rgba(4, 52, 45, 0.45), 0 0 12px rgba(185, 227, 240, 0.35);
+}
+
+.nav-banner .nav-link {
+    font-family: "Nunito Sans", "Segoe UI", sans-serif;
+    font-size: 0.94rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+.nav-banner .navbar-nav .nav-link.active,
+.nav-banner .navbar-nav .nav-link:focus,
+.nav-banner .navbar-nav .nav-link:hover {
+    color: #ffd84d;
+}
+
+.nav-banner .navbar-toggler {
+    border-color: rgba(245, 249, 251, 0.45);
+}
+
+.nav-banner .navbar-toggler:focus {
+    box-shadow: 0 0 0 0.2rem rgba(189, 233, 245, 0.35);
+}
+
+.nav-banner .dropdown-menu {
+    background-color: #f0f7fa;
+    border: 1px solid #b9e3f0;
+}
+
+.nav-banner .dropdown-item {
+    color: #0b4f43;
+}
+
+.nav-banner .dropdown-item:hover,
+.nav-banner .dropdown-item:focus {
+    background-color: #dceef6;
+    color: #083b33;
+}
+
+.nav-banner .form-control {
+    border-color: #b9e3f0;
+}
+
+.nav-banner .btn-outline-success {
+    border-color: #f4cf3a;
+    color: #f4cf3a;
+}
+
+.nav-banner .btn-outline-success:hover {
+    background-color: #f4cf3a;
+    border-color: #f4cf3a;
+    color: #0b4f43;
+}
+
+.media-section {
+    --media-height: clamp(260px, 34vw, 460px);
+    margin-top: 0.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.media-card {
+    height: var(--media-height);
+    border-radius: 14px;
+    overflow: hidden;
+    border: 2px solid #b9e3f0;
+    border-top: 5px solid #f4cf3a;
+    background: linear-gradient(180deg, #0b6757 0%, #0b4f43 100%);
+    box-shadow: 0 10px 20px rgba(7, 46, 40, 0.22);
+}
+
+.media-carousel .carousel-inner,
+.media-carousel .carousel-item,
+.media-carousel img {
+    height: 100%;
+}
+
+.media-carousel img {
+    object-fit: cover;
+}
+
+.media-carousel .carousel-control-prev-icon,
+.media-carousel .carousel-control-next-icon {
+    background-color: rgba(11, 79, 67, 0.7);
+    border-radius: 999px;
+    padding: 1.1rem;
+    border: 2px solid rgba(244, 207, 58, 0.9);
+}
+
+.media-video iframe {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: 0;
+}
+
+.accordion-banner {
+    --bs-accordion-bg: #f0f7fa;
+    --bs-accordion-color: #0b4f43;
+    --bs-accordion-border-color: #b9e3f0;
+    --bs-accordion-btn-bg: #0b6757;
+    --bs-accordion-btn-color: #f5f9fb;
+    --bs-accordion-active-bg: #0b4f43;
+    --bs-accordion-active-color: #ffd84d;
+    --bs-accordion-btn-focus-border-color: #f4cf3a;
+    --bs-accordion-btn-focus-box-shadow: 0 0 0 0.2rem rgba(244, 207, 58, 0.3);
+    background: linear-gradient(180deg, #0b6757 0%, #0b4f43 100%);
+    border-top: 5px solid #f4cf3a;
+    border-bottom: 2px solid #b9e3f0;
+    border-radius: 14px;
+}
+
+.accordion-banner .accordion-item {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #b9e3f0;
+}
+
+.accordion-banner .accordion-button {
+    font-family: "Nunito Sans", "Segoe UI", sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+.accordion-banner .accordion-body {
+    font-family: "Nunito Sans", "Segoe UI", sans-serif;
+}
+
+.collapse-banner-section {
+    border-top: 5px solid #f4cf3a;
+    border-bottom: 2px solid #b9e3f0;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #0b6757 0%, #0b4f43 100%);
+    max-height: 120px;
+    overflow: hidden;
+    transition: max-height 0.45s ease, padding 0.3s ease;
+}
+
+.collapse-banner-section.expanded {
+    max-height: 560px;
+    padding-bottom: 1rem !important;
+}
+
+.collapse-banner-section .btn-primary {
+    background-color: #0b4f43;
+    border-color: #b9e3f0;
+    color: #f5f9fb;
+    font-family: "Nunito Sans", "Segoe UI", sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+.collapse-banner-section .btn-primary:hover,
+.collapse-banner-section .btn-primary:focus {
+    background-color: #0b6757;
+    border-color: #f4cf3a;
+    color: #ffd84d;
+    box-shadow: 0 0 0 0.2rem rgba(244, 207, 58, 0.25);
+}
+
+.collapse-banner-section .card {
+    border: 1px solid #b9e3f0;
+    border-top: 4px solid #f4cf3a;
+    border-radius: 10px;
+    background-color: #f0f7fa;
+}
+
+.collapse-banner-section .card-body {
+    color: #0b4f43;
+    font-family: "Nunito Sans", "Segoe UI", sans-serif;
+    text-align: justify;
+}
+
+.collapse-banner-section .collapse-box {
+    min-height: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 0.35rem;
+}
+
+.collapse-banner-section .collapse-card {
+    width: var(--collapse-card-width, 100%);
+    max-width: 100%;
+    transition: width 0.35s ease;
+}
+
+@media (max-width: 991px) {
+    .collapse-banner-section.expanded {
+        max-height: 900px;
+    }
+}
+
+@media (max-width: 991px) {
+    .hero-row {
+        --hero-height: clamp(210px, 55vw, 320px);
+    }
+
+    .media-section {
+        --media-height: clamp(230px, 56vw, 420px);
+    }
+}
+
+
+.parent {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    gap: 8px;
+}
+    
+.div1 {
+    grid-column: span 3 / span 3;
+    overflow: hidden;
+}
+
+.div1 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.div2 {
+    grid-column: span 3 / span 3;
+    grid-row-start: 2;
+}
+
+.div3 {
+    grid-column: span 2 / span 2;
+    grid-row-start: 3;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.div3 .carousel-inner,
+.div3 .carousel-item {
+    aspect-ratio: 16 / 9;
+}
+
+.div3 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.div4 {
+    grid-column-start: 3;
+    grid-row-start: 3;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.div3 .carousel {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.div4 iframe {
+    width: 560px;
+    max-width: 100%;
+    height: 590px;
+    display: block;
+}
+
+.div4 iframe {
+    border: 0;
+}
+
+@media (max-width: 992px) {
+    .div3,
+    .div4 {
+        grid-column: span 3 / span 3;
+        grid-row: auto;
+    }
+
+    .div4 iframe {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9;
+    }
+}
+
+@media (max-width: 576px) {
+    .parent {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+
+    .div1,
+    .div2,
+    .div3,
+    .div4,
+    .div5,
+    .div6,
+    .div7,
+    .div8,
+    .div9 {
+        grid-column: 1;
+        grid-row: auto;
+    }
+}
+
+.div5 {
+    grid-column: span 3 / span 3;
+    grid-row-start: 4;
+}
+
+.div6 {
+    grid-row-start: 5;
+}
+
+.div7 {
+    grid-row-start: 5;
+}
+
+.div8 {
+    grid-row-start: 5;
+}
+
+.div9 {
+    grid-column: span 3 / span 3;
+}
+        
