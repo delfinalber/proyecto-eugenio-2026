@@ -397,4 +397,108 @@ button.btn.btn-primary[data-bs-target^="#collapseWidthExample-"] {
 	color: rgba(232, 241, 245, 0.95);
 }
 
+/* ===== MODALES ===== */
 
+/* Botones disparadores de modales */
+button.btn.btn-primary[data-bs-toggle="modal"] {
+	--bs-btn-color: #ffffff;
+	--bs-btn-bg: #0b6757;
+	--bs-btn-border-color: #0b6757;
+	--bs-btn-hover-color: #ffffff;
+	--bs-btn-hover-bg: #1f6153;
+	--bs-btn-hover-border-color: #1f6153;
+	--bs-btn-focus-shadow-rgb: 11, 103, 87;
+	--bs-btn-active-color: #ffffff;
+	--bs-btn-active-bg: #145244;
+	--bs-btn-active-border-color: #145244;
+	font-family: "Montserrat", "Trebuchet MS", sans-serif;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	border-radius: 0.45rem;
+	padding: 0.5rem 1.4rem;
+	border-top: 3px solid #ffd84d;
+	box-shadow: 0 3px 10px rgba(7, 46, 40, 0.22);
+	transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+button.btn.btn-primary[data-bs-toggle="modal"]:hover,
+button.btn.btn-primary[data-bs-toggle="modal"]:focus {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 16px rgba(7, 46, 40, 0.28);
+	border-top-color: #f4cf3a;
+}
+
+/* Contenido del modal */
+.modal-content {
+	background: linear-gradient(180deg, #0b6757 0%, #0b4f43 100%);
+	border: 2px solid #b9e3f0;
+	border-top: 5px solid #ffd84d;
+	border-radius: 0.75rem;
+	box-shadow: 0 16px 40px rgba(7, 46, 40, 0.38);
+	color: #f5f9fb;
+}
+
+/* Cabecera del modal */
+.modal-header {
+	background: linear-gradient(180deg, rgba(11, 103, 87, 0.95) 0%, rgba(11, 79, 67, 0.98) 100%);
+	border-bottom: 1px solid rgba(185, 227, 240, 0.45);
+	border-radius: 0.65rem 0.65rem 0 0;
+	padding: 1rem 1.25rem;
+}
+
+.modal-title {
+	font-family: "Montserrat", "Trebuchet MS", sans-serif;
+	font-weight: 800;
+	font-size: 1.15rem;
+	color: #ffd84d;
+	text-shadow: 0 2px 0 rgba(4, 52, 45, 0.35);
+	letter-spacing: 0.03em;
+}
+
+/* Botón cerrar (X) */
+.modal-header .btn-close {
+	filter: invert(1) brightness(1.8);
+	opacity: 0.85;
+}
+
+.modal-header .btn-close:hover,
+.modal-header .btn-close:focus {
+	opacity: 1;
+	filter: invert(1) brightness(2) sepia(1) saturate(4) hue-rotate(5deg);
+}
+
+/* Cuerpo del modal */
+.modal-body {
+	background: rgba(11, 79, 67, 0.55);
+	text-align: justify;
+	font-family: "Nunito Sans", "Segoe UI", sans-serif;
+	font-size: 0.98rem;
+	line-height: 1.65;
+	color: #f5f9fb;
+	padding: 1.1rem 1.25rem;
+}
+
+/* Pie del modal */
+.modal-footer {
+	background: linear-gradient(180deg, rgba(11, 79, 67, 0.98) 0%, rgba(10, 65, 56, 1) 100%);
+	border-top: 1px solid rgba(185, 227, 240, 0.35);
+	border-radius: 0 0 0.65rem 0.65rem;
+	padding: 0.75rem 1.25rem;
+}
+
+/* Botón "Cerrar" del pie */
+.modal-footer .btn-secondary {
+	--bs-btn-color: #0b4f43;
+	--bs-btn-bg: #ffd84d;
+	--bs-btn-border-color: #f4cf3a;
+	--bs-btn-hover-color: #0b4f43;
+	--bs-btn-hover-bg: #f4cf3a;
+	--bs-btn-hover-border-color: #e6c030;
+	--bs-btn-active-color: #0b4f43;
+	--bs-btn-active-bg: #e6c030;
+	--bs-btn-active-border-color: #d4b020;
+	font-family: "Montserrat", "Trebuchet MS", sans-serif;
+	font-weight: 700;
+	letter-spacing: 0.03em;
+	border-radius: 0.4rem;
+}
