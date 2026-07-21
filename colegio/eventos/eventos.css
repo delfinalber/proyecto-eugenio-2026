@@ -209,6 +209,110 @@ button.btn.btn-primary[data-bs-target^="#collapseWidthExample-"] {
 	}
 }
 
+.perfil-banner-section {
+	margin-top: 1.25rem;
+	margin-bottom: 1rem;
+	padding: 0;
+	background: linear-gradient(180deg, #0b6757 0%, #0b4f43 100%);
+	border-radius: 14px;
+	border: 2px solid #b9e3f0;
+	border-top: 5px solid #f4cf3a;
+	box-shadow: 0 10px 20px rgba(7, 46, 40, 0.22);
+	overflow: hidden;
+}
+
+.perfil-row {
+	min-height: clamp(360px, 34vw, 520px);
+}
+
+.perfil-copy,
+.perfil-image-col {
+	display: flex;
+	align-items: stretch;
+}
+
+.perfil-image-col {
+	justify-content: center;
+	align-items: center;
+}
+
+.perfil-panel {
+	width: 100%;
+	height: 100%;
+	min-height: 100%;
+	padding: clamp(1.25rem, 2vw, 2rem);
+	color: #f5f9fb;
+}
+
+.perfil-copy .perfil-panel {
+	background: linear-gradient(180deg, rgba(11, 103, 87, 0.95) 0%, rgba(11, 79, 67, 0.98) 100%);
+	border-right: 1px solid rgba(185, 227, 240, 0.55);
+}
+
+.perfil-copy h3,
+.perfil-copy h4 {
+	font-family: "Montserrat", "Trebuchet MS", sans-serif;
+	color: #ffd84d;
+	text-shadow: 0 2px 0 rgba(4, 52, 45, 0.35);
+}
+
+.perfil-copy h3 {
+	margin-bottom: 0.35rem;
+	font-size: clamp(1.5rem, 2.3vw, 2.2rem);
+	font-weight: 800;
+}
+
+.perfil-copy h4 {
+	margin-bottom: 0.35rem;
+	font-size: clamp(1.05rem, 1.35vw, 1.3rem);
+	font-weight: 700;
+}
+
+.perfil-copy p {
+	margin-bottom: 0;
+	text-align: justify;
+	font-family: "Nunito Sans", "Segoe UI", sans-serif;
+	font-size: clamp(0.98rem, 1.05vw, 1.08rem);
+	line-height: 1.65;
+	color: #f5f9fb;
+}
+
+.perfil-image-panel {
+	background: linear-gradient(180deg, #0b4f43 0%, #0a4138 100%);
+	padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.perfil-image {
+	display: block;
+	width: auto;
+	max-width: 100%;
+	height: auto;
+	max-height: 100%;
+	object-fit: cover;
+	border-radius: 0;
+	border: 0;
+	box-shadow: none;
+	margin: 0 auto;
+}
+
+@media (max-width: 991px) {
+	.perfil-row {
+		min-height: 0;
+	}
+
+	.perfil-copy .perfil-panel {
+		border-right: 0;
+		border-bottom: 1px solid rgba(185, 227, 240, 0.55);
+	}
+
+	.perfil-image-panel {
+		min-height: 280px;
+	}
+}
+
 
 .collapse-container {
 	overflow: hidden;
