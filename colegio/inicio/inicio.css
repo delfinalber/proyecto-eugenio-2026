@@ -293,4 +293,80 @@ button.btn.btn-primary[data-bs-target^="#collapseWidthExample-"] {
 	color: rgba(232, 241, 245, 0.95);
 }
 
+.login-modal {
+	background: linear-gradient(180deg, #0b6757 0%, #0b4f43 100%);
+	border: 2px solid #b9e3f0;
+	border-top: 5px solid #f4cf3a;
+	border-radius: 14px;
+	box-shadow: 0 14px 30px rgba(7, 46, 40, 0.3);
+	overflow: hidden;
+}
+
+.login-modal-header {
+	border-bottom: 1px solid rgba(185, 227, 240, 0.6);
+	background: linear-gradient(90deg, #0b4f43 0%, #0a7a66 100%);
+	padding: 0.9rem 1rem;
+}
+
+.login-modal-header .modal-title {
+	font-family: "Montserrat", "Trebuchet MS", sans-serif;
+	font-size: 1.05rem;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 0.8px;
+	color: #ffd84d;
+	text-shadow: 0 1px 0 rgba(4, 52, 45, 0.45);
+}
+
+.login-modal-header .btn-close {
+	filter: invert(99%) sepia(10%) saturate(252%) hue-rotate(168deg) brightness(103%) contrast(98%);
+	opacity: 0.95;
+}
+
+.login-modal .modal-body {
+	padding: 1rem;
+	color: #f5f9fb;
+	font-family: "Nunito Sans", "Segoe UI", sans-serif;
+}
+
+.login-label {
+	color: #f5f9fb;
+	font-weight: 700;
+	letter-spacing: 0.3px;
+}
+
+.login-input {
+	background-color: #f0f7fa;
+	border: 1px solid #b9e3f0;
+	color: #0b4f43;
+}
+
+.login-input:focus {
+	border-color: #f4cf3a;
+	box-shadow: 0 0 0 0.2rem rgba(244, 207, 58, 0.28);
+	background-color: #ffffff;
+}
+
+.login-input::placeholder {
+	color: #4f8b80;
+}
+
+.login-submit-btn {
+	background: linear-gradient(180deg, #f4cf3a 0%, #dfb81f 100%);
+	border: 1px solid #f4cf3a;
+	color: #0b4f43;
+	font-family: "Nunito Sans", "Segoe UI", sans-serif;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 0.6px;
+}
+
+.login-submit-btn:hover,
+.login-submit-btn:focus {
+	background: linear-gradient(180deg, #ffd84d 0%, #f4cf3a 100%);
+	border-color: #ffd84d;
+	color: #083b33;
+	box-shadow: 0 0 0 0.2rem rgba(185, 227, 240, 0.3);
+}
+
 

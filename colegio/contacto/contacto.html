@@ -36,20 +36,18 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="../inicio/index.html">Inicio</a>
+            <a class="nav-link active" aria-current="page" href="./index.html">Inicio</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="../eventos/eventos.html">Eventos</a>
           </li>
           
           <li class="nav-item">
-            <a class="nav-link" aria-disabled="true" href="./contacto.html">Contacto</a>
+            <a class="nav-link" aria-disabled="true" href="../contacto/contacto.html">Contacto</a>
           </li>
         </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+        
+        <button class="btn btn-outline-success" type="button" data-bs-toggle="modal" data-bs-target="#loginModal">Iniciar Sesión</button>
       </div>
     </div>
   </nav>
@@ -156,6 +154,29 @@
     </div>
   </footer>
 <!--Fin Footer-->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content login-modal">
+        <div class="modal-header login-modal-header">
+          <h5 class="modal-title" id="loginModalLabel">Inicio de sesión</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="usuarioLogin" class="form-label login-label">Usuario</label>
+              <input type="text" class="form-control login-input" id="usuarioLogin" placeholder="Ingresa tu usuario" required>
+            </div>
+            <div class="mb-3">
+              <label for="contrasenaLogin" class="form-label login-label">Contrasena</label>
+              <input type="password" class="form-control login-input" id="contrasenaLogin" placeholder="Ingresa tu contrasena" required>
+            </div>
+            <button type="submit" class="btn login-submit-btn w-100">Entrar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
   <script src="../bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
