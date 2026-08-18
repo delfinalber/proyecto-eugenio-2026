@@ -69,7 +69,7 @@
       <!--Inicio Formulario Eugenio-->
       <div class="contacto-card form-card">
         <h3 class="contacto-title">Formulario de Contacto</h3>
-        <form class="contacto-form" action="formulario-contacto.php" method="post">
+        <form class="contacto-form" action="formulario-contacto.php" method="post" autocomplete="off">
             <div class="row mb-3">
               <label for="inputEmail3" class="col-sm-3 col-form-label">Correo</label>
               <div class="col-sm-9">
@@ -188,5 +188,16 @@
     <!-- Fin boton flotante de whatsapp-->
 
   <script src="../bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    window.addEventListener("pageshow", function () {
+      const form = document.querySelector(".contacto-form");
+      if (!form) return;
+
+      form.reset();
+      form.querySelectorAll("input, textarea").forEach(function (field) {
+        field.value = "";
+      });
+    });
+  </script>
 </body>
 </html>
