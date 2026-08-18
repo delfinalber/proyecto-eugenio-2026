@@ -369,4 +369,27 @@ button.btn.btn-primary[data-bs-target^="#collapseWidthExample-"] {
 	box-shadow: 0 0 0 0.2rem rgba(185, 227, 240, 0.3);
 }
 
+.whatsapp-float {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #25d366;
+    color: white;
+    border-radius: 50px;
+    text-align: center;
+    font-size: 30px;
+    width: 60px;
+    height: 60px;
+    z-index: 100;
+    box-shadow: 2px 2px 3px #999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+.whatsapp-float:hover {
+    background-color: #20ba5a;
+    color: white;
+}
+
 

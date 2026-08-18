@@ -261,6 +261,27 @@
     </div>
   </div>
 
+    <!-- Inicio boton flotante de whatsapp-->
+    <!-- Enlace del Botón de WhatsApp -->
+<?php 
+    $telefono = "+573132345685"; // Reemplaza con tu número y código de país
+    $mensaje = "Hola, quiero más información acerca de las fecha de matricula del Eugenio Ferro Falla"; // Mensaje predeterminado
+    $url_whatsapp = "https://wa.me/" . $telefono . "?text=" . urlencode($mensaje);
+?>
+
+<a href="<?php echo $url_whatsapp; ?>" class="whatsapp-float" target="_blank" rel="noopener" title="Enviar mensaje por WhatsApp" aria-label="Enviar mensaje por WhatsApp">
+    <i class="fab fa-whatsapp" aria-hidden="true"></i>
+    <span class="visually-hidden">Enviar mensaje por WhatsApp</span>
+</a>
+
+<!-- Asegúrate de incluir FontAwesome para el ícono en tu <head>: -->
+<!-- <link rel="stylesheet" href="https://cloudflare.com"> -->
+
+
+
+    <!-- Fin boton flotante de whatsapp-->
+
+
   <script src="../bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
