@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eventos</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <title>Contacto</title>
+   <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Nunito+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../bootstrap-5.3.8-dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./cuadricula.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="./contacto.css">
-    <link rel="icon" href="./img-eventos/logo.jpeg" type="image/x-icon">
+    <link rel="stylesheet" href="./cuadricula.css">
+    <link rel="icon" href="./img-contacto/logo.jpeg" type="image/x-icon">
 </head>
 <body>
 
@@ -68,29 +69,29 @@
       <!--Inicio Formulario Eugenio-->
       <div class="contacto-card form-card">
         <h3 class="contacto-title">Formulario de Contacto</h3>
-        <form class="contacto-form">
+        <form class="contacto-form" action="formulario-contacto.php" method="post">
             <div class="row mb-3">
               <label for="inputEmail3" class="col-sm-3 col-form-label">Correo</label>
               <div class="col-sm-9">
-                <input type="email" class="form-control" id="inputEmail3" placeholder="Digite su correo">
+                <input type="email" class="form-control" id="inputEmail3" placeholder="Digite su correo" name="email">
               </div>
             </div>
             <div class="row mb-3">
               <label for="inputNombre3" class="col-sm-3 col-form-label">Nombre</label>
               <div class="col-sm-9">
-                <input type="text" class="form-control" id="inputNombre3" placeholder="Digite su nombre">
+                <input type="text" class="form-control" id="inputNombre3" placeholder="Digite su nombre" name="nombre">
               </div>
             </div>
             <div class="row mb-3">
               <label for="inputTelefono3" class="col-sm-3 col-form-label">Teléfono</label>
               <div class="col-sm-9">
-                <input type="tel" class="form-control" id="inputTelefono3" placeholder="Digite su telefono">
+                <input type="tel" class="form-control" id="inputTelefono3" placeholder="Digite su telefono" name="telefono">
               </div>
             </div>
             <div class="row mb-3">
               <label for="inputMensaje3" class="col-sm-3 col-form-label">Mensaje</label>
               <div class="col-sm-9">
-                <textarea class="form-control" id="inputMensaje3" rows="3" maxlength="500" placeholder="Maximo 500 caracteres"></textarea>
+                <textarea class="form-control" id="inputMensaje3" rows="3" maxlength="500" placeholder="Maximo 500 caracteres" name="texto_area"></textarea>
               </div>
             </div>
             

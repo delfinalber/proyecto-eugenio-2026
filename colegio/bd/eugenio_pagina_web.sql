@@ -97,6 +97,21 @@ CREATE TABLE `usuarios` (
   `contrasena_users` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=ucs2 COLLATE=ucs2_spanish2_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `formulario_contacto`
+--
+
+CREATE TABLE `formulario_contacto` (
+  `id_formulario` int(11) NOT NULL AUTO_INCREMENT,
+  `correo_formulario` varchar(150) NOT NULL,
+  `nombre_formulario` varchar(150) NOT NULL,
+  `telefono_formulario` varchar(30) NOT NULL,
+  `mensaje_formulario` text NOT NULL,
+  PRIMARY KEY (`id_formulario`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
 --
 -- Índices para tablas volcadas
 --
