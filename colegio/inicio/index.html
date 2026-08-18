@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Nunito+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../bootstrap-5.3.8-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="./inicio.css">
     <link rel="stylesheet" href="./cuadricula.css">
     <link rel="icon" href="./img-ini/logo.jpeg" type="image/x-icon">
@@ -262,23 +263,11 @@
   </div>
 
     <!-- Inicio boton flotante de whatsapp-->
-    <!-- Enlace del Botón de WhatsApp -->
-<?php 
-    $telefono = "+573132345685"; // Reemplaza con tu número y código de país
-    $mensaje = "Hola, quiero más información acerca de las fecha de matricula del Eugenio Ferro Falla"; // Mensaje predeterminado
-    $url_whatsapp = "https://wa.me/" . $telefono . "?text=" . urlencode($mensaje);
-?>
-
-<a href="<?php echo $url_whatsapp; ?>" class="whatsapp-float" target="_blank" rel="noopener" title="Enviar mensaje por WhatsApp" aria-label="Enviar mensaje por WhatsApp">
-    <i class="fab fa-whatsapp" aria-hidden="true"></i>
-    <span class="visually-hidden">Enviar mensaje por WhatsApp</span>
-</a>
-
-<!-- Asegúrate de incluir FontAwesome para el ícono en tu <head>: -->
-<!-- <link rel="stylesheet" href="https://cloudflare.com"> -->
-
-
-
+    <!-- Enlace del Botón de WhatsApp (URL estática: este archivo es .html y no procesa PHP) -->
+    <a href="https://wa.me/573132345685?text=Hola%2C+quiero+m%C3%A1s+informaci%C3%B3n+acerca+de+las+fecha+de+matricula+del+Eugenio+Ferro+Falla" class="whatsapp-float" target="_blank" rel="noopener" title="Enviar mensaje por WhatsApp" aria-label="Enviar mensaje por WhatsApp">
+        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+        <span class="visually-hidden">Enviar mensaje por WhatsApp</span>
+    </a>
     <!-- Fin boton flotante de whatsapp-->
 
 

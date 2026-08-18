@@ -373,23 +373,27 @@ button.btn.btn-primary[data-bs-target^="#collapseWidthExample-"] {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: #25d366;
-    color: white;
+    background: linear-gradient(180deg, var(--brand-green) 0%, var(--brand-green-dark) 100%);
+    color: #fff;
     border-radius: 50px;
     text-align: center;
     font-size: 30px;
     width: 60px;
     height: 60px;
     z-index: 100;
-    box-shadow: 2px 2px 3px #999;
+    box-shadow: 0 4px 10px rgba(20, 82, 68, 0.45);
     display: flex;
     justify-content: center;
     align-items: center;
     text-decoration: none;
+    transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
-.whatsapp-float:hover {
-    background-color: #20ba5a;
-    color: white;
+.whatsapp-float:hover,
+.whatsapp-float:focus {
+    background: linear-gradient(180deg, var(--brand-green-dark) 0%, var(--brand-green-deep) 100%);
+    color: #fff;
+    box-shadow: 0 6px 14px rgba(20, 82, 68, 0.55);
+    transform: translateY(-2px);
 }
 
 
