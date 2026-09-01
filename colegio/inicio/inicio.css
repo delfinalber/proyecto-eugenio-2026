@@ -302,6 +302,16 @@ button.btn.btn-primary[data-bs-target^="#collapseWidthExample-"] {
 	overflow: hidden;
 }
 
+/* El body y el footer del modal quedan dentro de un <form>; sin esto el
+   form no se estira/encoge como flex item y el footer queda oculto por el
+   overflow: hidden del modal cuando el contenido es mas alto que la pantalla. */
+.login-modal > form {
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+	overflow: hidden;
+}
+
 .login-modal-header {
 	border-bottom: 1px solid rgba(185, 227, 240, 0.6);
 	background: linear-gradient(90deg, #0b4f43 0%, #0a7a66 100%);
@@ -396,4 +406,146 @@ button.btn.btn-primary[data-bs-target^="#collapseWidthExample-"] {
     transform: translateY(-2px);
 }
 
+/* ---- Editor de contenido de inicio (paleta banner.png) ---- */
+
+.editor-header-card {
+	background: linear-gradient(90deg, #0b4f43 0%, #0a7a66 100%);
+	border: 2px solid #b9e3f0;
+	border-top: 5px solid #f4cf3a;
+	border-radius: 14px;
+	padding: 1.4rem 1.6rem;
+	color: #f5f9fb;
+	box-shadow: 0 14px 30px rgba(7, 46, 40, 0.3);
+}
+
+.editor-header-card h1 {
+	font-family: "Montserrat", "Trebuchet MS", sans-serif;
+	font-size: 1.4rem;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 0.6px;
+	color: #ffd84d;
+	text-shadow: 0 1px 0 rgba(4, 52, 45, 0.45);
+	margin-bottom: 0.35rem;
+}
+
+.editor-header-card p {
+	margin: 0;
+	font-family: "Nunito Sans", "Segoe UI", sans-serif;
+}
+
+.editor-alert {
+	border: 1px solid #b9e3f0;
+	border-left: 5px solid #f4cf3a;
+	background-color: #eaf7f3;
+	color: #0b4f43;
+	font-weight: 600;
+	border-radius: 10px;
+}
+
+.editor-content-card {
+	background: linear-gradient(180deg, #0b6757 0%, #0b4f43 100%);
+	border: 2px solid #b9e3f0;
+	border-top: 5px solid #f4cf3a;
+	border-radius: 14px;
+	box-shadow: 0 14px 30px rgba(7, 46, 40, 0.3);
+	color: #f5f9fb;
+	overflow: hidden;
+}
+
+.editor-content-card .editor-section-title {
+	font-family: "Montserrat", "Trebuchet MS", sans-serif;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 0.6px;
+	color: #ffd84d;
+	font-size: 0.95rem;
+	border-bottom: 1px solid rgba(185, 227, 240, 0.35);
+	padding-bottom: 0.4rem;
+	margin-bottom: 0.75rem;
+}
+
+.editor-content-card .editor-field-label {
+	color: #b9e3f0;
+	font-weight: 700;
+	font-size: 0.8rem;
+	text-transform: uppercase;
+	letter-spacing: 0.3px;
+	margin-bottom: 0.15rem;
+}
+
+.editor-content-card .editor-field-value {
+	color: #f5f9fb;
+	font-family: "Nunito Sans", "Segoe UI", sans-serif;
+	word-break: break-word;
+}
+
+.editor-content-card .editor-thumb {
+	width: 100%;
+	max-width: 160px;
+	height: 90px;
+	object-fit: cover;
+	border: 1px solid #b9e3f0;
+	border-radius: 8px;
+	background-color: rgba(255, 255, 255, 0.08);
+}
+
+.editor-actions .btn-editar {
+	background: linear-gradient(180deg, #f4cf3a 0%, #dfb81f 100%);
+	border: 1px solid #f4cf3a;
+	color: #0b4f43;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 0.4px;
+}
+
+.editor-actions .btn-editar:hover,
+.editor-actions .btn-editar:focus {
+	background: linear-gradient(180deg, #ffd84d 0%, #f4cf3a 100%);
+	color: #083b33;
+}
+
+.editor-actions .btn-eliminar {
+	background: transparent;
+	border: 1px solid #f2a7a7;
+	color: #ffdede;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 0.4px;
+}
+
+.editor-actions .btn-eliminar:hover,
+.editor-actions .btn-eliminar:focus {
+	background-color: rgba(220, 53, 69, 0.6);
+	color: #ffffff;
+	border-color: #f2a7a7;
+}
+
+.editor-empty-card {
+	background: linear-gradient(180deg, #0b6757 0%, #0b4f43 100%);
+	border: 2px dashed #b9e3f0;
+	border-radius: 14px;
+	color: #f5f9fb;
+	padding: 2rem;
+	text-align: center;
+}
+
+.editor-empty-card .btn-crear {
+	background: linear-gradient(180deg, #f4cf3a 0%, #dfb81f 100%);
+	border: 1px solid #f4cf3a;
+	color: #0b4f43;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 0.4px;
+}
+
+.editor-empty-card .btn-crear:hover,
+.editor-empty-card .btn-crear:focus {
+	background: linear-gradient(180deg, #ffd84d 0%, #f4cf3a 100%);
+	color: #083b33;
+}
+
+.login-modal .form-text {
+	color: #b9e3f0;
+}
 

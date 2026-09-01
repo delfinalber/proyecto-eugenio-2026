@@ -55,6 +55,7 @@
         "Celestino",
         "centralismo",
         "centros",
+        "Cerrar",
         "ciclo",
         "ciudadano",
         "cívicos",
@@ -243,13 +244,16 @@
         "nuestra",
         "nuestros",
         "objetivos",
+        "objetos",
         "obligatorios",
         "optimización",
         "ordenador",
         "ordenadores",
+        "orientado",
         "Ortigoza",
         "pacífica",
         "Pacífico",
+        "pagina",
         "Panamá",
         "Paola",
         "Pardo",
@@ -367,5 +371,6 @@
         "Voleibol",
         "Volver"
     ],
-    "explorer.compactFolders": false
+    "explorer.compactFolders": false,
+    "claudeCodeChat.permissions.yoloMode": false
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-08-2026 a las 23:51:27
+-- Tiempo de generación: 01-09-2026 a las 14:39:33
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -79,7 +79,15 @@ CREATE TABLE `formulario_contacto` (
 INSERT INTO `formulario_contacto` (`id_formulario`, `correo_formulario`, `nombre_formulario`, `telefono_formulario`, `mensaje_formulario`) VALUES
 (2, 'delfin.alber@gmail.com', 'ALBER DELFIN PEÑA ORTIGOZA', 2147483647, 'Hola como estan.'),
 (3, 'delfin.alber@gmail.com', 'ALBER DELFIN PEÑA ORTIGOZA', 2147483647, 'Hola como estan.'),
-(4, 'breidy4282@gmail.com', 'Breidy Sanchez', 2147483647, 'Estamos programando con el Sena en el Eugenio Ferro Falla.');
+(4, 'breidy4282@gmail.com', 'Breidy Sanchez', 2147483647, 'Estamos programando con el Sena en el Eugenio Ferro Falla.'),
+(5, 'dipayaco_0306@hotmail.com', 'DIANA PAOLA YAGUE CORTES', 2147483647, 'Hola india como está.'),
+(6, 'delfin.alber@gmail.com', 'ALBER DELFIN PEÑA', 2147483647, 'Hola soy Delfin.'),
+(7, 'santiagocruz@gmail.com', 'Santiago Peña Yague', 2147483647, 'Hola hijo como vamos'),
+(8, 'delfin.alber@gmail.com', 'Rosa Isabel Peña', 323456789, 'Hola hija'),
+(9, 'delfin.alber@gmail.com', 'Alber Delfin Peña Ortigoza', 2147483647, 'Ya esta sirviendo el formulario, carga a la base de datos y envia de una al correo de gmail.'),
+(10, 'ronaljosuefernandezm@gmail.com', 'Ronal Josue Fernandez', 2147483647, 'Hola, estamos en Santa Maria Huila, desarrollando Software.'),
+(11, 'rubielasanchez504@gmail.com', 'David Santiago Giron Vera', 2147483647, 'Un saludo David, estamos en el Eugenio Ferro Falla Programando con PHP y PHPMailer.'),
+(12, 'cadenaolmoscristianmatias@gmail.com', 'CRISTIAN MATIAS CADENA OLMO', 2147483647, 'Un saludo, estamos en el Ricardo Borrero, programando en JavaScript');
 
 -- --------------------------------------------------------
 
@@ -105,7 +113,8 @@ CREATE TABLE `inicio` (
   `button-colarsar-titulo-2` varchar(100) NOT NULL,
   `button-colarsar-texto-2` text NOT NULL,
   `button-colarsar-titulo-3` varchar(100) NOT NULL,
-  `button-colarsar-texto-3` text NOT NULL
+  `button-colarsar-texto-3` text NOT NULL,
+  `numero_whatsapp` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 -- --------------------------------------------------------
@@ -174,7 +183,7 @@ ALTER TABLE `eventos`
 -- AUTO_INCREMENT de la tabla `formulario_contacto`
 --
 ALTER TABLE `formulario_contacto`
-  MODIFY `id_formulario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_formulario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `inicio`
