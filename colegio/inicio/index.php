@@ -93,7 +93,7 @@ $numero_whatsapp_inicio = $inicio["numero_whatsapp"] ?? "573132345685";
             <a class="nav-link active" aria-current="page" href="./index.html">Inicio</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../eventos/eventos.html">Eventos</a>
+            <a class="nav-link" href="../eventos/eventos.php">Eventos</a>
           </li>
           
           <li class="nav-item">
