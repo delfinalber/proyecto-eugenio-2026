@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-09-2026 a las 14:39:33
+-- Tiempo de generación: 20-09-2026 a las 21:44:02
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -57,6 +57,13 @@ CREATE TABLE `eventos` (
   `modal-3-titulo-2` varchar(100) NOT NULL,
   `modal-3-text-3` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `eventos`
+--
+
+INSERT INTO `eventos` (`id_eventos`, `banner_eventos`, `titulo-1`, `titulo-2`, `texto-1`, `img-url-1`, `modal-1-titulo-1`, `modal-1-titulo-2`, `modal-1-text-1`, `modal-2-titulo-1`, `modal-2-titulo-2`, `modal-2-text-2`, `modal-3-titulo-1`, `modal-3-titulo-2`, `modal-3-text-3`) VALUES
+(2, './img-eventos/banner.png', 'El perfil de nuestros estudiantes', 'El estudiante del Colegio Eugenio Ferro Falla de Campoalegre Huila deberá:', 'Ser partícipe de su quehacer educativo para construir su propio proyecto de vida con éxito.\nSer activamente creador, responsable, comprometido para liderar y producir cambios de excelencia en su vida familiar y comunitaria.\nSer una persona con capacidad crítica, reflexiva, analítica.\nSer consciente de su individualidad, su identidad y su libertad con responsabilidad.\nSer una persona que aprecie, promueva y viva en los valores familiares, sociales, culturales, cívicos, éticos, estéticos y ecológicos.\nFormarse en el respeto por los derechos humanos, la paz, los principios democráticos, los acuerdos de convivencia, el pluralismo, la justicia y la tolerancia.\nSer un futuro ciudadano que puedan participar en el funcionamiento y desarrollo de las estructuras sociales económicas y políticas de Colombia con honestidad y compromiso.\nSer una persona dispuesta a propender por una formación integral.', './img-eventos/perfil.jpeg', 'Voleibol', 'Voleibol', 'Edad de 7 a 11 años Martes y jueves: 4:30 p.m. a 5:30 p. m', 'Música', 'Música', 'Técnica Vocal de 8 años en adelante Lunes y miércoles: 4:30 p.m. a 5:30 p. m.\nInstrumentos musicales de 6 años en adelante Martes y jueves: 4:30 p.m. a 5:30 p. m.', 'Fútbol', 'Fútbol', 'Categoría Babies (masculino) de 4 a 6 años Lunes y miércoles: 4:30 p.m. a 5:30 p. m.\nCategoría Infantil (masculino) de 7 años en adelante Martes y jueves: 4:30 p.m. a 5:30 p. m.\nCategoría Femenino de 9 años en adelante Martes y jueves: 4:30 p.m. a 5:30 p. m.');
 
 -- --------------------------------------------------------
 
@@ -117,6 +124,13 @@ CREATE TABLE `inicio` (
   `numero_whatsapp` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
+--
+-- Volcado de datos para la tabla `inicio`
+--
+
+INSERT INTO `inicio` (`id_inicio`, `banner_inicio`, `carru_img_1_inicio`, `carru_img_2_inicio`, `carru_img_3_inicio`, `url_video_inicio`, `titulo-acordeon-1`, `texto-acordeon-1`, `titulo-acordeon-2`, `texto-acordeon-2`, `titulo-acordeon-3`, `texto-acordeon-3`, `button-colarsar-titulo-1`, `button-colarsar-texto-1`, `button-colarsar-titulo-2`, `button-colarsar-texto-2`, `button-colarsar-titulo-3`, `button-colarsar-texto-3`, `numero_whatsapp`) VALUES
+(1, './img-ini/inicio-6a96d8ed4f0ab.png', './img-ini/inicio-6a96d8ed501d5.jpeg', './img-ini/inicio-6a96d8ed5048c.jpeg', './img-ini/inicio-6a96d8ed50822.jpeg', 'https://youtu.be/G4B3WRvLX30?si=ix61wfLnyRp1gK1R', 'Técnica en Programación de Software', 'Programación de Software con el Sena-CIES con PHP-MOISES. El desarrollo de software hace referencia a un conjunto de actividades informáticas dedicadas al proceso de creación, diseño, implementación y soporte de software. El software propiamente dicho es el conjunto de instrucciones o programas que indican a un ordenador lo que debe hacer. Es independiente del hardware y hace que los ordenadores sean programables. El objetivo del desarrollo de software es crear un producto que satisfaga las necesidades de los usuarios y los objetivos empresariales de forma eficaz, repetible y segura. Los desarrolladores de software, programadores e ingenieros de software desarrollan software a través de una serie de pasos denominados ciclo de vida de desarrollo de software (SDLC). Las herramientas con inteligencia artificial e IA generativa se utilizan cada vez más para ayudar a los equipos de desarrollo de software a producir y probar el código.', 'Técnica en Matenimiento de Automatismos Industriales', 'La automatización industrial con el Sena CIES de Neiva Huila. Cuando hablamos de automatización industrial, nos referimos a sistemas que usan ordenadores, autómatas programables, robots y tecnologías digitales para controlar máquinas y procesos en las fábricas. Su objetivo es reducir al máximo el trabajo manual y evitar tareas peligrosas al reemplazarlas por acciones automáticas y seguras. La automatización industrial es la evolución natural de la mecanización. Mientras la mecanización usa máquinas básicas para ayudar al trabajador, la automatización emplea equipos inteligentes y programados para controlar los procesos de manera más precisa, rápida y eficiente. Actualmente, los rápidos avances tecnológicos han dado lugar a la llamada Industria 4.0 o cuarta revolución industrial. En esta nueva etapa, las empresas usan sistemas inteligentes que permiten controlar y optimizar tola la producción con mayor precisión, calidad y rendimiento. Esto convierte a la automatización industrial en una pieza clave para compañías fabricantes y prestadoras de servicios industriales. En este artículo, vamos a explicar claramente los componentes principales que forman parte de los sistemas de automatización. También veremos cuáles son los tipos más usados en la industria y analizaremos su importancia para técnicos y empresas de servicios o manufactura.', 'Técnico en Integración de Contenidos Digitales', 'El programa de Multimedia del SENA (formalmente conocido como Tecnología en Desarrollo Multimedia y Web o Técnico en Producción de Contenidos Digitales) Producir materiales audiovisuales para web, con finalidad comunicativa, aplicando técnicas de guionización, grabación, edición y optimización digital, para lograr contenidos adecuados en formato, narrativa y calidad técnica, según estándares de publicación en plataformas digitales.', 'Tecnología', 'La tecnología llegó para revolucionar nuestra vida a través de múltiples herramientas, dispositivos, software y plataformas, que nos permiten ser más eficientes, productivos y tener una mejor calidad de vida. Nos ha cambiado la forma en la que hacemos las actividades cotidianas, la manera en que nos comunicamos, el cómo trabajamos y hasta la forma de enseñar y aprender.\r\nSanta María Huila', 'Pedagogía', 'La tecnología llegó para revolucionar nuestra vida a través de múltiples herramientas, dispositivos, software y plataformas, que nos permiten ser más eficientes, productivos y tener una mejor calidad de vida. Nos ha cambiado la forma en la que hacemos las actividades cotidianas, la manera en que nos comunicamos, el cómo trabajamos y hasta la forma de enseñar y aprender.', 'Convivencia Escolar', 'La convivencia escolar es un espacio en el cual se promueve acciones y acuerdos diarios que garantizan un ambiente de respeto, empatía y resolución pacífica de conflictos dentro de la comunidad educativa. Fomentan una cultura de buen trato que impacta positivamente el aprendizaje Angel.', '3132345685');
+
 -- --------------------------------------------------------
 
 --
@@ -128,6 +142,13 @@ CREATE TABLE `usuarios` (
   `usuario_users` varchar(150) NOT NULL,
   `contrasena_users` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=ucs2 COLLATE=ucs2_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`id_users`, `usuario_users`, `contrasena_users`) VALUES
+(1, 'alberdelfin', '$2y$10$ebNgFh1.uFg7oWmFoGkqD.N39ZILmkM577l/y8YSIWP0Xj8UCx8/O');
 
 --
 -- Índices para tablas volcadas
@@ -177,7 +198,7 @@ ALTER TABLE `contacto`
 -- AUTO_INCREMENT de la tabla `eventos`
 --
 ALTER TABLE `eventos`
-  MODIFY `id_eventos` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_eventos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `formulario_contacto`
@@ -189,13 +210,13 @@ ALTER TABLE `formulario_contacto`
 -- AUTO_INCREMENT de la tabla `inicio`
 --
 ALTER TABLE `inicio`
-  MODIFY `id_inicio` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_inicio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_users` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_users` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

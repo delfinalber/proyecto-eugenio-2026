@@ -1,0 +1,245 @@
+<?php
+
+require_once __DIR__ . "/conexion.php";
+require_once __DIR__ . "/funciones.php";
+
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+
+$resultado = $mysqli->query("SELECT * FROM contacto ORDER BY id_contacto DESC LIMIT 1");
+$contacto = $resultado ? $resultado->fetch_assoc() : null;
+
+// Variables PHP con la informacion de la tabla `contacto` (con valores por defecto de respaldo)
+$banner_contacto = ($contacto["banner_contacto"] ?? "") ?: BANNER_CONTACTO_POR_DEFECTO;
+$titulo_1_contacto = ($contacto["titulo-1-contacto"] ?? "") ?: TITULO_CONTACTO_POR_DEFECTO;
+$map_url_contacto = urlMapaValida($contacto["map-url-contacto"] ?? "") ?: URL_MAPA_POR_DEFECTO;
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto</title>
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Nunito+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../bootstrap-5.3.8-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="./contacto.css">
+    <link rel="stylesheet" href="./cuadricula.css">
+    <link rel="icon" href="./img-contacto/logo.jpeg" type="image/x-icon">
+</head>
+<body>
+
+  <!--Inicio Banner-->
+  <div class="container-fluid text-center px-0">
+    <div class="row g-0 align-items-stretch hero-row">
+      <div class="col-12">
+        <div class="hero-banner-card">
+          <img src="<?= htmlspecialchars($banner_contacto, ENT_QUOTES, "UTF-8") ?>" class="banner" alt="Banner principal">
+        </div>
+      </div>
+    </div>
+  </div>
+<!--Fin Banner-->
+  <br>
+<!--Inicio Nav-->
+  <nav class="navbar navbar-expand-lg nav-banner w-100">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">I.E. Eugenio Ferro Falla</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="../inicio/index.php">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../eventos/eventos.php">Eventos</a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="./contacto.php">Contacto</a>
+          </li>
+        </ul>
+        
+        <button class="btn btn-outline-success" type="button" data-bs-toggle="modal" data-bs-target="#loginModal">Iniciar Sesión</button>
+      </div>
+    </div>
+  </nav>
+<!--Fin nav-->
+  <br>
+  <!--Inicio formulario contacto-->
+  <div class="container text-center contacto-section">
+  <div class="row contacto-row g-3 align-items-stretch">
+    <div class="col-12 col-lg-8 contacto-mapa-col">
+      <!--Inicio Mapa Eugenio-->
+      <div class="contacto-card mapa-card">
+        <h3 class="contacto-title"><?= htmlspecialchars($titulo_1_contacto, ENT_QUOTES, "UTF-8") ?></h3>
+        <iframe src="<?= htmlspecialchars($map_url_contacto, ENT_QUOTES, "UTF-8") ?>" title="Mapa de ubicacion I.E. Eugenio Ferro Falla" allowfullscreen="" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </div>
+      <!--Fin Mapa Eugenio-->
+    </div>
+    <div class="col-12 col-lg-4 contacto-form-col">
+      <!--Inicio Formulario Eugenio-->
+      <div class="contacto-card form-card">
+        <h3 class="contacto-title">Formulario de Contacto</h3>
+        <form class="contacto-form" action="formulario-contacto.php" method="post" autocomplete="off">
+            <div class="row mb-3">
+              <label for="inputEmail3" class="col-sm-3 col-form-label">Correo</label>
+              <div class="col-sm-9">
+                <input type="email" class="form-control" id="inputEmail3" placeholder="Digite su correo" name="email">
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="inputNombre3" class="col-sm-3 col-form-label">Nombre</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" id="inputNombre3" placeholder="Digite su nombre" name="nombre">
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="inputTelefono3" class="col-sm-3 col-form-label">Teléfono</label>
+              <div class="col-sm-9">
+                <input type="tel" class="form-control" id="inputTelefono3" placeholder="Digite su telefono" name="telefono">
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="inputMensaje3" class="col-sm-3 col-form-label">Mensaje</label>
+              <div class="col-sm-9">
+                <textarea class="form-control" id="inputMensaje3" rows="3" maxlength="500" placeholder="Maximo 500 caracteres" name="sexto_area"></textarea>
+              </div>
+            </div>
+            
+            
+            
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+      </div>
+
+      <!--Fin Formulario Eugenio-->
+    </div>
+    
+  </div>
+</div>
+
+
+  <!--Fin formulario contacto-->
+  <br>
+<!--Inicio Footer-->
+  <footer class="site-footer">
+    <div class="container footer-main">
+      <div class="row gy-4">
+        <div class="col-12 col-md-6 col-lg-3">
+          <h5 class="footer-title">Blog de Jose Facchin</h5>
+          <ul class="footer-list">
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Autores invitados</a></li>
+          </ul>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          <h5 class="footer-title">JF Digital</h5>
+          <ul class="footer-list">
+            <li><a href="#">Servicios</a></li>
+            <li><a href="#">Contacto</a></li>
+          </ul>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          <h5 class="footer-title">Informacion</h5>
+          <ul class="footer-list">
+            <li><a href="#">Plan de Social Media</a></li>
+            <li><a href="#">Plan de Marketing Digital</a></li>
+            <li><a href="#">Marketing de Contenidos</a></li>
+          </ul>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          <h5 class="footer-title">Mi comunidad</h5>
+          <div class="social-links">
+            <a href="#" aria-label="Facebook">f</a>
+            <a href="#" aria-label="Twitter">t</a>
+            <a href="#" aria-label="Instagram">ig</a>
+            <a href="#" aria-label="LinkedIn">in</a>
+            <a href="#" aria-label="YouTube">yt</a>
+            <a href="#" aria-label="Pinterest">p</a>
+            <a href="#" aria-label="RSS">rss</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>Copyright 2026 - I.E. Eugenio Ferro Falla | Politica de Privacidad</p>
+      </div>
+    </div>
+  </footer>
+<!--Fin Footer-->
+<!--Inicio Login Modal-->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content login-modal">
+        <div class="modal-header login-modal-header">
+          <h5 class="modal-title" id="loginModalLabel">Inicio de sesión</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <form method="post" action="../auth/login.php" id="formularioLogin">
+            <input type="hidden" name="origen" value="contacto">
+            <div class="d-flex justify-content-end mb-2">
+              <span class="login-label" style="font-size: 0.85rem;">Tiempo restante: <strong id="tiempoRestanteLogin">30</strong>s</span>
+            </div>
+            <div class="mb-3">
+              <label for="usuarioLogin" class="form-label login-label">Usuario</label>
+              <input type="text" class="form-control login-input" id="usuarioLogin" name="usuario" placeholder="Ingresa tu usuario" autocomplete="username" required>
+            </div>
+            <div class="mb-3">
+              <label for="contrasenaLogin" class="form-label login-label">Contrasena</label>
+              <input type="password" class="form-control login-input" id="contrasenaLogin" name="contrasena" placeholder="Ingresa tu contrasena" autocomplete="current-password" required>
+            </div>
+            <button type="submit" class="btn login-submit-btn w-100" id="botonEntrarLogin">Entrar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+<!--Fin Login Modal-->
+
+<!--Inicio modal error de login-->
+  <div class="modal fade" id="loginErrorModal" tabindex="-1" aria-labelledby="loginErrorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content login-modal">
+        <div class="modal-header login-modal-header">
+          <h5 class="modal-title" id="loginErrorModalLabel">Error de acceso</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body text-center">
+          <p class="mb-0">Usuario o contraseña incorrecta.</p>
+        </div>
+        <div class="modal-footer" style="border-top: 1px solid rgba(185, 227, 240, 0.6); justify-content: center;">
+          <button type="button" class="btn login-submit-btn" data-bs-dismiss="modal">Entendido</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!--Fin modal error de login-->
+
+  <!-- Inicio boton flotante de whatsapp-->
+    <!-- Enlace del Botón de WhatsApp (URL estática: este archivo es .html y no procesa PHP) -->
+    <a href="https://wa.me/573132345685?text=Hola%2C+quiero+m%C3%A1s+informaci%C3%B3n+acerca+de+las+fecha+de+matricula+del+Eugenio+Ferro+Falla" class="whatsapp-float" target="_blank" rel="noopener" title="Enviar mensaje por WhatsApp" aria-label="Enviar mensaje por WhatsApp">
+        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+        <span class="visually-hidden">Enviar mensaje por WhatsApp</span>
+    </a>
+    <!-- Fin boton flotante de whatsapp-->
+
+  <script src="../bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../auth/login.js"></script>
+  <script>
+    window.addEventListener("pageshow", function () {
+      const form = document.querySelector(".contacto-form");
+      if (!form) return;
+
+      form.reset();
+      form.querySelectorAll("input, textarea").forEach(function (field) {
+        field.value = "";
+      });
+    });
+  </script>
+</body>
+</html>

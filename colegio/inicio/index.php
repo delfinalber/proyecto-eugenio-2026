@@ -1,13 +1,9 @@
 <?php
 
-require_once __DIR__ . "/sesion.php";
 require_once __DIR__ . "/conexion.php";
 
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Pragma: no-cache");
-
-$mostrarErrorLogin = !empty($_SESSION["login_error"]);
-unset($_SESSION["login_error"]);
 
 // Convierte cualquier URL de YouTube (watch, youtu.be, shorts, embed) a formato embed reproducible en iframe
 function urlYoutubeEmbed(string $url): string
@@ -90,14 +86,14 @@ $numero_whatsapp_inicio = $inicio["numero_whatsapp"] ?? "573132345685";
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="./index.html">Inicio</a>
+            <a class="nav-link active" aria-current="page" href="./index.php">Inicio</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="../eventos/eventos.php">Eventos</a>
           </li>
           
           <li class="nav-item">
-            <a class="nav-link" aria-disabled="true" href="../contacto/contacto.html">Contacto</a>
+            <a class="nav-link" aria-disabled="true" href="../contacto/contacto.php">Contacto</a>
           </li>
         </ul>
         
@@ -294,7 +290,8 @@ $numero_whatsapp_inicio = $inicio["numero_whatsapp"] ?? "573132345685";
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
         <div class="modal-body">
-          <form method="post" action="./login.php" id="formularioLogin">
+          <form method="post" action="../auth/login.php" id="formularioLogin">
+            <input type="hidden" name="origen" value="inicio">
             <div class="d-flex justify-content-end mb-2">
               <span class="login-label" style="font-size: 0.85rem;">Tiempo restante: <strong id="tiempoRestanteLogin">30</strong>s</span>
             </div>
@@ -343,48 +340,6 @@ $numero_whatsapp_inicio = $inicio["numero_whatsapp"] ?? "573132345685";
 
 
   <script src="../bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    (function () {
-      var modalLogin = document.getElementById("loginModal");
-      var etiquetaTiempo = document.getElementById("tiempoRestanteLogin");
-      var botonEntrar = document.getElementById("botonEntrarLogin");
-      var formularioLogin = document.getElementById("formularioLogin");
-      var intervalo = null;
-
-      function iniciarTemporizadorLogin() {
-        var segundos = 30;
-        etiquetaTiempo.textContent = segundos;
-        botonEntrar.disabled = false;
-
-        clearInterval(intervalo);
-        intervalo = setInterval(function () {
-          segundos -= 1;
-          etiquetaTiempo.textContent = segundos > 0 ? segundos : 0;
-          if (segundos <= 0) {
-            clearInterval(intervalo);
-            botonEntrar.disabled = true;
-          }
-        }, 1000);
-      }
-
-      if (modalLogin) {
-        modalLogin.addEventListener("shown.bs.modal", iniciarTemporizadorLogin);
-        modalLogin.addEventListener("hidden.bs.modal", function () {
-          clearInterval(intervalo);
-          formularioLogin.reset();
-        });
-      }
-
-      <?php if ($mostrarErrorLogin): ?>
-      var modalError = new bootstrap.Modal(document.getElementById("loginErrorModal"));
-      modalError.show();
-      <?php endif; ?>
-
-      // Limpia el historial de navegación (evita que quede el estado de error/login)
-      if (window.history && window.history.replaceState) {
-        window.history.replaceState(null, "", window.location.pathname);
-      }
-    })();
-  </script>
+  <script src="../auth/login.js"></script>
 </body>
 </html>

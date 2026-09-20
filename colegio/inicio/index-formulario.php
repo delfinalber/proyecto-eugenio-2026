@@ -174,14 +174,13 @@ function valor_campo(?array $inicio, string $campo): string
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="./index.php">Inicio</a>
+            <a class="nav-link active" aria-current="page" href="../inicio/index-formulario.php">Inicio</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../eventos/eventos.php">Eventos</a>
+            <a class="nav-link" href="../eventos/eventos-formulario.php">Eventos</a>
           </li>
-          
           <li class="nav-item">
-            <a class="nav-link" aria-disabled="true" href="../contacto/contacto.html">Contacto</a>
+            <a class="nav-link" href="../contacto/contacto-formulario.php">Contacto</a>
           </li>
         </ul>
         
@@ -344,7 +343,8 @@ function valor_campo(?array $inicio, string $campo): string
         </div>
         <div class="modal-footer" style="border-top: 1px solid rgba(185, 227, 240, 0.6); justify-content: center;">
           <button type="button" class="btn" data-bs-dismiss="modal" style="color: #f5f9fb;">Cancelar</button>
-          <form method="post" action="./logout.php">
+          <form method="post" action="../auth/logout.php">
+            <input type="hidden" name="origen" value="inicio">
             <button type="submit" class="btn login-submit-btn">Cerrar sesión</button>
           </form>
         </div>
@@ -397,11 +397,6 @@ function valor_campo(?array $inicio, string $campo): string
 
 
   <script src="../bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    // Limpia el historial de navegación al entrar tras iniciar sesión (evita reabrir con "atrás")
-    if (window.history && window.history.replaceState) {
-      window.history.replaceState(null, "", window.location.pathname);
-    }
-  </script>
+  <script src="../auth/panel.js"></script>
 </body>
 </html>

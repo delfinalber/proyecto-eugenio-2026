@@ -6,6 +6,9 @@ defaults:
 sections:
   system_info:
     enabled: true
+  models_info:
+    enabled: true
+    max_chars: 6000
   environment_instructions:
     enabled: true
     max_chars: 6000

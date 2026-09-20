@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mysqli->close();
     header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
     header("Pragma: no-cache");
-    header("Location: contacto.html", true, 303);
+    header("Location: contacto.php", true, 303);
     exit;
 }
 
