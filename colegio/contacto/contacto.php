@@ -6,16 +6,25 @@ require_once __DIR__ . "/funciones.php";
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Pragma: no-cache");
 
-$resultado = $mysqli->query("SELECT * FROM contacto ORDER BY id_contacto DESC LIMIT 1");
+$resultado = $mysqli->query("SELECT banner_contacto, `titulo-1-contacto`, `map-url-contacto` FROM contacto ORDER BY id_contacto DESC LIMIT 1");
 $contacto = $resultado ? $resultado->fetch_assoc() : null;
 
 // Variables PHP con la informacion de la tabla `contacto` (con valores por defecto de respaldo)
 $banner_contacto = ($contacto["banner_contacto"] ?? "") ?: BANNER_CONTACTO_POR_DEFECTO;
 $titulo_1_contacto = ($contacto["titulo-1-contacto"] ?? "") ?: TITULO_CONTACTO_POR_DEFECTO;
 $map_url_contacto = urlMapaValida($contacto["map-url-contacto"] ?? "") ?: URL_MAPA_POR_DEFECTO;
+
+// Resultado del envio del formulario de contacto (formulario-contacto.php lo indica en la URL)
+$mensajesContacto = [
+    "ok"       => ["¡Mensaje enviado!", "Recibimos tu mensaje. Te responderemos lo antes posible."],
+    "invalido" => ["Revisa tus datos", "Verifica que el correo y el teléfono sean válidos y que el mensaje no supere los 500 caracteres."],
+    "error"    => ["No se pudo enviar", "Ocurrió un problema al guardar tu mensaje. Inténtalo de nuevo en unos minutos."],
+];
+$estadoContacto = $_GET["contacto"] ?? "";
+$resultadoContacto = is_string($estadoContacto) ? ($mensajesContacto[$estadoContacto] ?? null) : null;
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,7 +33,7 @@ $map_url_contacto = urlMapaValida($contacto["map-url-contacto"] ?? "") ?: URL_MA
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Nunito+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../bootstrap-5.3.8-dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="./contacto.css">
     <link rel="stylesheet" href="./cuadricula.css">
     <link rel="icon" href="./img-contacto/logo.jpeg" type="image/x-icon">
@@ -77,7 +86,7 @@ $map_url_contacto = urlMapaValida($contacto["map-url-contacto"] ?? "") ?: URL_MA
       <!--Inicio Mapa Eugenio-->
       <div class="contacto-card mapa-card">
         <h3 class="contacto-title"><?= htmlspecialchars($titulo_1_contacto, ENT_QUOTES, "UTF-8") ?></h3>
-        <iframe src="<?= htmlspecialchars($map_url_contacto, ENT_QUOTES, "UTF-8") ?>" title="Mapa de ubicacion I.E. Eugenio Ferro Falla" allowfullscreen="" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        <iframe src="<?= htmlspecialchars($map_url_contacto, ENT_QUOTES, "UTF-8") ?>" title="Mapa de ubicación I.E. Eugenio Ferro Falla" loading="lazy" allowfullscreen="" referrerpolicy="strict-origin-when-cross-origin"></iframe>
       </div>
       <!--Fin Mapa Eugenio-->
     </div>
@@ -89,25 +98,25 @@ $map_url_contacto = urlMapaValida($contacto["map-url-contacto"] ?? "") ?: URL_MA
             <div class="row mb-3">
               <label for="inputEmail3" class="col-sm-3 col-form-label">Correo</label>
               <div class="col-sm-9">
-                <input type="email" class="form-control" id="inputEmail3" placeholder="Digite su correo" name="email">
+                <input type="email" class="form-control" id="inputEmail3" placeholder="Digite su correo" name="email" maxlength="200" autocomplete="email" required>
               </div>
             </div>
             <div class="row mb-3">
               <label for="inputNombre3" class="col-sm-3 col-form-label">Nombre</label>
               <div class="col-sm-9">
-                <input type="text" class="form-control" id="inputNombre3" placeholder="Digite su nombre" name="nombre">
+                <input type="text" class="form-control" id="inputNombre3" placeholder="Digite su nombre" name="nombre" maxlength="200" autocomplete="name" required>
               </div>
             </div>
             <div class="row mb-3">
               <label for="inputTelefono3" class="col-sm-3 col-form-label">Teléfono</label>
               <div class="col-sm-9">
-                <input type="tel" class="form-control" id="inputTelefono3" placeholder="Digite su telefono" name="telefono">
+                <input type="tel" class="form-control" id="inputTelefono3" placeholder="Digite su teléfono" name="telefono" maxlength="20" autocomplete="tel">
               </div>
             </div>
             <div class="row mb-3">
               <label for="inputMensaje3" class="col-sm-3 col-form-label">Mensaje</label>
               <div class="col-sm-9">
-                <textarea class="form-control" id="inputMensaje3" rows="3" maxlength="500" placeholder="Maximo 500 caracteres" name="sexto_area"></textarea>
+                <textarea class="form-control" id="inputMensaje3" rows="3" maxlength="500" placeholder="Máximo 500 caracteres" name="texto_area" required></textarea>
               </div>
             </div>
             
@@ -190,8 +199,8 @@ $map_url_contacto = urlMapaValida($contacto["map-url-contacto"] ?? "") ?: URL_MA
               <input type="text" class="form-control login-input" id="usuarioLogin" name="usuario" placeholder="Ingresa tu usuario" autocomplete="username" required>
             </div>
             <div class="mb-3">
-              <label for="contrasenaLogin" class="form-label login-label">Contrasena</label>
-              <input type="password" class="form-control login-input" id="contrasenaLogin" name="contrasena" placeholder="Ingresa tu contrasena" autocomplete="current-password" required>
+              <label for="contrasenaLogin" class="form-label login-label">Contraseña</label>
+              <input type="password" class="form-control login-input" id="contrasenaLogin" name="contrasena" placeholder="Ingresa tu contraseña" autocomplete="current-password" required>
             </div>
             <button type="submit" class="btn login-submit-btn w-100" id="botonEntrarLogin">Entrar</button>
           </form>
@@ -220,8 +229,29 @@ $map_url_contacto = urlMapaValida($contacto["map-url-contacto"] ?? "") ?: URL_MA
   </div>
 <!--Fin modal error de login-->
 
+<?php if ($resultadoContacto): ?>
+<!--Inicio modal resultado del formulario de contacto-->
+  <div class="modal fade" id="contactoResultadoModal" tabindex="-1" aria-labelledby="contactoResultadoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content login-modal">
+        <div class="modal-header login-modal-header">
+          <h5 class="modal-title" id="contactoResultadoModalLabel"><?= htmlspecialchars($resultadoContacto[0], ENT_QUOTES, "UTF-8") ?></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body text-center">
+          <p class="mb-0"><?= htmlspecialchars($resultadoContacto[1], ENT_QUOTES, "UTF-8") ?></p>
+        </div>
+        <div class="modal-footer" style="border-top: 1px solid rgba(185, 227, 240, 0.6); justify-content: center;">
+          <button type="button" class="btn login-submit-btn" data-bs-dismiss="modal">Entendido</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!--Fin modal resultado del formulario de contacto-->
+<?php endif; ?>
+
   <!-- Inicio boton flotante de whatsapp-->
-    <!-- Enlace del Botón de WhatsApp (URL estática: este archivo es .html y no procesa PHP) -->
+    <!-- Enlace del Botón de WhatsApp -->
     <a href="https://wa.me/573132345685?text=Hola%2C+quiero+m%C3%A1s+informaci%C3%B3n+acerca+de+las+fecha+de+matricula+del+Eugenio+Ferro+Falla" class="whatsapp-float" target="_blank" rel="noopener" title="Enviar mensaje por WhatsApp" aria-label="Enviar mensaje por WhatsApp">
         <i class="fab fa-whatsapp" aria-hidden="true"></i>
         <span class="visually-hidden">Enviar mensaje por WhatsApp</span>
@@ -231,6 +261,10 @@ $map_url_contacto = urlMapaValida($contacto["map-url-contacto"] ?? "") ?: URL_MA
   <script src="../bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
   <script src="../auth/login.js"></script>
   <script>
+    <?php if ($resultadoContacto): ?>
+    new bootstrap.Modal(document.getElementById("contactoResultadoModal")).show();
+    <?php endif; ?>
+
     window.addEventListener("pageshow", function () {
       const form = document.querySelector(".contacto-form");
       if (!form) return;

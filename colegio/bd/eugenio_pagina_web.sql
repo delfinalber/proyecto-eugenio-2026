@@ -75,9 +75,9 @@ CREATE TABLE `formulario_contacto` (
   `id_formulario` int(11) NOT NULL,
   `correo_formulario` varchar(200) NOT NULL,
   `nombre_formulario` varchar(200) NOT NULL,
-  `telefono_formulario` int(11) NOT NULL,
+  `telefono_formulario` varchar(20) NOT NULL,
   `mensaje_formulario` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
 --
 -- Volcado de datos para la tabla `formulario_contacto`
