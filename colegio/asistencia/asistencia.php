@@ -3,6 +3,13 @@
 require_once __DIR__ . "/../auth/sesion.php";
 require_once __DIR__ . "/conexion.php";
 
+// Excepcion propia para los errores de validacion de este formulario (en vez de
+// lanzar la generica RuntimeException). Sigue siendo una RuntimeException, asi
+// que los catch (RuntimeException $error) existentes la siguen capturando igual.
+final class ValidacionAsistenciaException extends RuntimeException
+{
+}
+
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Pragma: no-cache");
 
@@ -35,19 +42,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $telefono = trim($_POST["telefino_asistencia"] ?? "");
 
             if ($documento === "" || !ctype_digit($documento) || (int) $documento <= 0) {
-                throw new RuntimeException("El documento debe ser un número válido.");
+                throw new ValidacionAsistenciaException("El documento debe ser un número válido.");
             }
             if ($nombre === "" || mb_strlen($nombre) > 100) {
-                throw new RuntimeException("El nombre es obligatorio (máximo 100 caracteres).");
+                throw new ValidacionAsistenciaException("El nombre es obligatorio (máximo 100 caracteres).");
             }
             if (!in_array($grado, $gradosValidos, true)) {
-                throw new RuntimeException("Selecciona un grado válido.");
+                throw new ValidacionAsistenciaException("Selecciona un grado válido.");
             }
             if (!in_array($jornada, $jornadasValidas, true)) {
-                throw new RuntimeException("Selecciona una jornada válida.");
+                throw new ValidacionAsistenciaException("Selecciona una jornada válida.");
             }
             if ($telefono === "" || !ctype_digit($telefono) || strlen($telefono) < 7 || strlen($telefono) > 14) {
-                throw new RuntimeException("El teléfono debe tener entre 7 y 14 dígitos.");
+                throw new ValidacionAsistenciaException("El teléfono debe tener entre 7 y 14 dígitos.");
             }
 
             $documento = (int) $documento;
@@ -92,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $documentoInasistencia = preg_replace('/\D+/', '', trim($_POST["documento_inasistencia"] ?? ""));
 
             if ($documentoInasistencia === "") {
-                throw new RuntimeException("Escribe y busca el documento del estudiante antes de registrar la inasistencia.");
+                throw new ValidacionAsistenciaException("Escribe y busca el documento del estudiante antes de registrar la inasistencia.");
             }
 
             // Los datos del estudiante se toman siempre de la tabla `asistencia` (nunca de lo
@@ -108,7 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmtBuscar->close();
 
             if (!$estudiante) {
-                throw new RuntimeException("No se encontró ningún estudiante con ese documento en la tabla de asistencia.");
+                throw new ValidacionAsistenciaException("No se encontró ningún estudiante con ese documento en la tabla de asistencia.");
             }
 
             $stmtInsertar = $mysqli->prepare(
@@ -229,7 +236,7 @@ function texto(string $valor): string
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Nunito+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../bootstrap-5.3.8-dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="./asistencia.css">
     <link rel="stylesheet" href="./cuadricula.css">
     <link rel="icon" href="../inicio/img-ini/logo.jpeg" type="image/x-icon">
@@ -269,7 +276,7 @@ function texto(string $valor): string
             <a class="nav-link" href="../contacto/contacto-formulario.php">Contacto</a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-current="page">Asistencia</a>
+            <button type="button" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" aria-expanded="false" aria-current="page">Asistencia</button>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item active" aria-current="page" href="./asistencia.php">Asistencia</a></li>
               <li><a class="dropdown-item" href="./inasistencia.php">Inasistencia</a></li>

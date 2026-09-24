@@ -4,6 +4,10 @@ require_once __DIR__ . "/../auth/sesion.php";
 require_once __DIR__ . "/conexion.php";
 require_once __DIR__ . "/inasistencia_datos.php";
 
+// Nombres de jornada usados en este archivo (evita repetir el mismo texto)
+const JORNADA_MANANA = "Mañana";
+const JORNADA_TARDE = "Tarde";
+
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Pragma: no-cache");
 
@@ -20,10 +24,10 @@ for ($g = 6; $g <= 11; $g++) {
     }
 }
 
-$jornadasValidas = ["Mañana", "Tarde"];
+$jornadasValidas = [JORNADA_MANANA, JORNADA_TARDE];
 
 // Conteo por grado y jornada (se inicializa en 0 para mostrar siempre los 18 grados)
-$conteoPorGrado = array_fill_keys($gradosValidos, ["Mañana" => 0, "Tarde" => 0]);
+$conteoPorGrado = array_fill_keys($gradosValidos, [JORNADA_MANANA => 0, JORNADA_TARDE => 0]);
 
 $resultado = $mysqli->query(
     "SELECT grado_asistencia, jornada_asistencia, COUNT(*) AS total
@@ -48,8 +52,8 @@ foreach ($conteoPorGrado as $grado => $jornadas) {
 }
 
 $totalGeneral = array_sum(array_map("array_sum", $conteoPorGrado));
-$totalManana = array_sum(array_column($conteoPorGrado, "Mañana"));
-$totalTarde = array_sum(array_column($conteoPorGrado, "Tarde"));
+$totalManana = array_sum(array_column($conteoPorGrado, JORNADA_MANANA));
+$totalTarde = array_sum(array_column($conteoPorGrado, JORNADA_TARDE));
 $maximoPorGradoBase = max(1, max($totalesPorGradoBase));
 
 // Filtros de la seccion de inasistencias (grado, jornada y rango de fechas).
@@ -65,7 +69,7 @@ $filtroFechaHasta = $filtroInasistencia["fechaHasta"];
 // Conteo de inasistencias por grado y jornada, y por estudiante, a partir de
 // los registros ya filtrados (asi las tarjetas, la tabla y los graficos
 // siempre coinciden con el mismo filtro).
-$conteoInasistenciaPorGrado = array_fill_keys($gradosValidos, ["Mañana" => 0, "Tarde" => 0]);
+$conteoInasistenciaPorGrado = array_fill_keys($gradosValidos, [JORNADA_MANANA => 0, JORNADA_TARDE => 0]);
 $conteoPorEstudiante = [];
 
 foreach ($registrosInasistencia as $registro) {
@@ -97,8 +101,8 @@ usort($rankingEstudiantes, fn($a, $b) => $b["total"] <=> $a["total"]);
 $topEstudiantes = array_slice($rankingEstudiantes, 0, 10);
 
 $totalInasistencias = array_sum(array_map("array_sum", $conteoInasistenciaPorGrado));
-$totalInasistenciaManana = array_sum(array_column($conteoInasistenciaPorGrado, "Mañana"));
-$totalInasistenciaTarde = array_sum(array_column($conteoInasistenciaPorGrado, "Tarde"));
+$totalInasistenciaManana = array_sum(array_column($conteoInasistenciaPorGrado, JORNADA_MANANA));
+$totalInasistenciaTarde = array_sum(array_column($conteoInasistenciaPorGrado, JORNADA_TARDE));
 $porcentajeInasistencia = $totalGeneral > 0 ? round($totalInasistencias / $totalGeneral * 100, 1) : 0;
 
 if ($totalInasistencias === 0) {
@@ -106,19 +110,19 @@ if ($totalInasistencias === 0) {
 } elseif ($totalInasistenciaManana === $totalInasistenciaTarde) {
     $jornadaConMasInasistencias = "Mañana y Tarde (empatadas)";
 } else {
-    $jornadaConMasInasistencias = $totalInasistenciaManana > $totalInasistenciaTarde ? "Mañana" : "Tarde";
+    $jornadaConMasInasistencias = $totalInasistenciaManana > $totalInasistenciaTarde ? JORNADA_MANANA : JORNADA_TARDE;
 }
 
 // Datos para los graficos (Chart.js), ya listos como arreglos simples
 $datosChartJornada = [
-    "labels"  => ["Mañana", "Tarde"],
+    "labels"  => [JORNADA_MANANA, JORNADA_TARDE],
     "valores" => [$totalInasistenciaManana, $totalInasistenciaTarde],
 ];
 
 $datosChartGrado = [
     "labels" => array_keys($conteoInasistenciaOrdenado),
-    "manana" => array_column($conteoInasistenciaOrdenado, "Mañana"),
-    "tarde"  => array_column($conteoInasistenciaOrdenado, "Tarde"),
+    "manana" => array_column($conteoInasistenciaOrdenado, JORNADA_MANANA),
+    "tarde"  => array_column($conteoInasistenciaOrdenado, JORNADA_TARDE),
 ];
 
 $datosChartEstudiantes = [
@@ -150,7 +154,7 @@ function jsonSeguro($valor): string
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Nunito+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../bootstrap-5.3.8-dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="./asistencia.css">
     <link rel="stylesheet" href="./cuadricula.css">
     <link rel="icon" href="../inicio/img-ini/logo.jpeg" type="image/x-icon">
@@ -190,7 +194,7 @@ function jsonSeguro($valor): string
             <a class="nav-link" href="../contacto/contacto-formulario.php">Contacto</a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-current="page">Asistencia</a>
+            <button type="button" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" aria-expanded="false" aria-current="page">Asistencia</button>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="./asistencia.php">Asistencia</a></li>
               <li><a class="dropdown-item" href="./inasistencia.php">Inasistencia</a></li>
@@ -332,8 +336,8 @@ function jsonSeguro($valor): string
             <?php foreach ($conteoPorGrado as $grado => $jornadas): ?>
               <tr>
                 <td><?= texto($grado) ?></td>
-                <td><?= $jornadas["Mañana"] ?></td>
-                <td><?= $jornadas["Tarde"] ?></td>
+                <td><?= $jornadas[JORNADA_MANANA] ?></td>
+                <td><?= $jornadas[JORNADA_TARDE] ?></td>
                 <td><strong><?= array_sum($jornadas) ?></strong></td>
               </tr>
             <?php endforeach; ?>
@@ -368,8 +372,8 @@ function jsonSeguro($valor): string
             <?php foreach ($conteoInasistenciaPorGrado as $grado => $jornadas): ?>
               <tr>
                 <td><?= texto($grado) ?></td>
-                <td><?= $jornadas["Mañana"] ?></td>
-                <td><?= $jornadas["Tarde"] ?></td>
+                <td><?= $jornadas[JORNADA_MANANA] ?></td>
+                <td><?= $jornadas[JORNADA_TARDE] ?></td>
                 <td><strong><?= array_sum($jornadas) ?></strong></td>
               </tr>
             <?php endforeach; ?>
@@ -502,7 +506,7 @@ function jsonSeguro($valor): string
 
   <script src="../bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
   <script src="../auth/panel.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.1/chart.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.1/chart.umd.min.js" integrity="sha512-WoViKhKD4qI2WruSZqv9+kvM4WfFhUMQCLN4QlDTt5aU56fLQy2gYoxWIqlEnXqJy/+Ac5q/hk1oWfqnMDhwMA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>
     (function () {
       "use strict";
@@ -563,8 +567,8 @@ function jsonSeguro($valor): string
           data: {
             labels: datosGrado.labels,
             datasets: [
-              { label: "Mañana", data: datosGrado.manana, backgroundColor: colorManana, borderRadius: 4, maxBarThickness: 22 },
-              { label: "Tarde", data: datosGrado.tarde, backgroundColor: colorTarde, borderRadius: 4, maxBarThickness: 22 }
+              { label: JORNADA_MANANA, data: datosGrado.manana, backgroundColor: colorManana, borderRadius: 4, maxBarThickness: 22 },
+              { label: JORNADA_TARDE, data: datosGrado.tarde, backgroundColor: colorTarde, borderRadius: 4, maxBarThickness: 22 }
             ]
           },
           options: {
