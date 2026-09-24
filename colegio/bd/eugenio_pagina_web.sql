@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-09-2026 a las 21:44:02
+-- Tiempo de generación: 24-09-2026 a las 17:10:00
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -24,6 +24,22 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `asistencia`
+--
+
+CREATE TABLE `asistencia` (
+  `id_asistencia` int(11) NOT NULL,
+  `documento_asistencia` int(11) NOT NULL,
+  `nombre_asistencia` varchar(100) NOT NULL,
+  `grado_asistencia` varchar(5) NOT NULL,
+  `jornada_asistencia` varchar(20) NOT NULL,
+  `telefino_asistencia` bigint(14) NOT NULL,
+  `fecha_asistencia` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `contacto`
 --
 
@@ -33,6 +49,13 @@ CREATE TABLE `contacto` (
   `titulo-1-contacto` varchar(100) NOT NULL,
   `map-url-contacto` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `contacto`
+--
+
+INSERT INTO `contacto` (`id_contacto`, `banner_contacto`, `titulo-1-contacto`, `map-url-contacto`) VALUES
+(1, './img-contacto/contacto-6ab0424b74deb.png', 'Ubicación IE Eugenio Ferro Falla Yorman', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.5855776901626!2d-75.29627532689985!3d2.934764354436984!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b7461c302e831%3A0x82cb3770b6b767a9!2sInstituci%C3%B3n%20Educativa%20T%C3%A9cnico%20Superior!5e0!3m2!1ses-419!2sco!4v1790078362843!5m2!1ses-419!2sco');
 
 -- --------------------------------------------------------
 
@@ -63,7 +86,7 @@ CREATE TABLE `eventos` (
 --
 
 INSERT INTO `eventos` (`id_eventos`, `banner_eventos`, `titulo-1`, `titulo-2`, `texto-1`, `img-url-1`, `modal-1-titulo-1`, `modal-1-titulo-2`, `modal-1-text-1`, `modal-2-titulo-1`, `modal-2-titulo-2`, `modal-2-text-2`, `modal-3-titulo-1`, `modal-3-titulo-2`, `modal-3-text-3`) VALUES
-(2, './img-eventos/banner.png', 'El perfil de nuestros estudiantes', 'El estudiante del Colegio Eugenio Ferro Falla de Campoalegre Huila deberá:', 'Ser partícipe de su quehacer educativo para construir su propio proyecto de vida con éxito.\nSer activamente creador, responsable, comprometido para liderar y producir cambios de excelencia en su vida familiar y comunitaria.\nSer una persona con capacidad crítica, reflexiva, analítica.\nSer consciente de su individualidad, su identidad y su libertad con responsabilidad.\nSer una persona que aprecie, promueva y viva en los valores familiares, sociales, culturales, cívicos, éticos, estéticos y ecológicos.\nFormarse en el respeto por los derechos humanos, la paz, los principios democráticos, los acuerdos de convivencia, el pluralismo, la justicia y la tolerancia.\nSer un futuro ciudadano que puedan participar en el funcionamiento y desarrollo de las estructuras sociales económicas y políticas de Colombia con honestidad y compromiso.\nSer una persona dispuesta a propender por una formación integral.', './img-eventos/perfil.jpeg', 'Voleibol', 'Voleibol', 'Edad de 7 a 11 años Martes y jueves: 4:30 p.m. a 5:30 p. m', 'Música', 'Música', 'Técnica Vocal de 8 años en adelante Lunes y miércoles: 4:30 p.m. a 5:30 p. m.\nInstrumentos musicales de 6 años en adelante Martes y jueves: 4:30 p.m. a 5:30 p. m.', 'Fútbol', 'Fútbol', 'Categoría Babies (masculino) de 4 a 6 años Lunes y miércoles: 4:30 p.m. a 5:30 p. m.\nCategoría Infantil (masculino) de 7 años en adelante Martes y jueves: 4:30 p.m. a 5:30 p. m.\nCategoría Femenino de 9 años en adelante Martes y jueves: 4:30 p.m. a 5:30 p. m.');
+(2, './img-eventos/banner.png', 'El perfil de nuestros estudiantes del Eugenio Ferro Falla', 'El estudiante del Colegio Eugenio Ferro Falla de Campoalegre Huila deberá:', 'Ser partícipe de su quehacer educativo para construir su propio proyecto de vida con éxito.\r\nSer activamente creador, responsable, comprometido para liderar y producir cambios de excelencia en su vida familiar y comunitaria.\r\nSer una persona con capacidad crítica, reflexiva, analítica.\r\nSer consciente de su individualidad, su identidad y su libertad con responsabilidad.\r\nSer una persona que aprecie, promueva y viva en los valores familiares, sociales, culturales, cívicos, éticos, estéticos y ecológicos.\r\nFormarse en el respeto por los derechos humanos, la paz, los principios democráticos, los acuerdos de convivencia, el pluralismo, la justicia y la tolerancia.\r\nSer un futuro ciudadano que puedan participar en el funcionamiento y desarrollo de las estructuras sociales económicas y políticas de Colombia con honestidad y compromiso.\r\nSer una persona dispuesta a propender por una formación integral.', './img-eventos/perfil.jpeg', 'Voleibol', 'Voleibol', 'Edad de 7 a 11 años Martes y jueves: 4:30 p.m. a 5:30 p. m', 'Música', 'Música', 'Técnica Vocal de 8 años en adelante Lunes y miércoles: 4:30 p.m. a 5:30 p. m.\r\nInstrumentos musicales de 6 años en adelante Martes y jueves: 4:30 p.m. a 5:30 p. m.', 'Fútbol', 'Fútbol', 'Categoría Babies (masculino) de 4 a 6 años Lunes y miércoles: 4:30 p.m. a 5:30 p. m.\r\nCategoría Infantil (masculino) de 7 años en adelante Martes y jueves: 4:30 p.m. a 5:30 p. m.\r\nCategoría Femenino de 9 años en adelante Martes y jueves: 4:30 p.m. a 5:30 p. m.');
 
 -- --------------------------------------------------------
 
@@ -84,17 +107,18 @@ CREATE TABLE `formulario_contacto` (
 --
 
 INSERT INTO `formulario_contacto` (`id_formulario`, `correo_formulario`, `nombre_formulario`, `telefono_formulario`, `mensaje_formulario`) VALUES
-(2, 'delfin.alber@gmail.com', 'ALBER DELFIN PEÑA ORTIGOZA', 2147483647, 'Hola como estan.'),
-(3, 'delfin.alber@gmail.com', 'ALBER DELFIN PEÑA ORTIGOZA', 2147483647, 'Hola como estan.'),
-(4, 'breidy4282@gmail.com', 'Breidy Sanchez', 2147483647, 'Estamos programando con el Sena en el Eugenio Ferro Falla.'),
-(5, 'dipayaco_0306@hotmail.com', 'DIANA PAOLA YAGUE CORTES', 2147483647, 'Hola india como está.'),
-(6, 'delfin.alber@gmail.com', 'ALBER DELFIN PEÑA', 2147483647, 'Hola soy Delfin.'),
-(7, 'santiagocruz@gmail.com', 'Santiago Peña Yague', 2147483647, 'Hola hijo como vamos'),
-(8, 'delfin.alber@gmail.com', 'Rosa Isabel Peña', 323456789, 'Hola hija'),
-(9, 'delfin.alber@gmail.com', 'Alber Delfin Peña Ortigoza', 2147483647, 'Ya esta sirviendo el formulario, carga a la base de datos y envia de una al correo de gmail.'),
-(10, 'ronaljosuefernandezm@gmail.com', 'Ronal Josue Fernandez', 2147483647, 'Hola, estamos en Santa Maria Huila, desarrollando Software.'),
-(11, 'rubielasanchez504@gmail.com', 'David Santiago Giron Vera', 2147483647, 'Un saludo David, estamos en el Eugenio Ferro Falla Programando con PHP y PHPMailer.'),
-(12, 'cadenaolmoscristianmatias@gmail.com', 'CRISTIAN MATIAS CADENA OLMO', 2147483647, 'Un saludo, estamos en el Ricardo Borrero, programando en JavaScript');
+(2, 'delfin.alber@gmail.com', 'ALBER DELFIN PEÑA ORTIGOZA', '2147483647', 'Hola como estan.'),
+(3, 'delfin.alber@gmail.com', 'ALBER DELFIN PEÑA ORTIGOZA', '2147483647', 'Hola como estan.'),
+(4, 'breidy4282@gmail.com', 'Breidy Sanchez', '2147483647', 'Estamos programando con el Sena en el Eugenio Ferro Falla.'),
+(5, 'dipayaco_0306@hotmail.com', 'DIANA PAOLA YAGUE CORTES', '2147483647', 'Hola india como está.'),
+(6, 'delfin.alber@gmail.com', 'ALBER DELFIN PEÑA', '2147483647', 'Hola soy Delfin.'),
+(7, 'santiagocruz@gmail.com', 'Santiago Peña Yague', '2147483647', 'Hola hijo como vamos'),
+(8, 'delfin.alber@gmail.com', 'Rosa Isabel Peña', '323456789', 'Hola hija'),
+(9, 'delfin.alber@gmail.com', 'Alber Delfin Peña Ortigoza', '2147483647', 'Ya esta sirviendo el formulario, carga a la base de datos y envia de una al correo de gmail.'),
+(10, 'ronaljosuefernandezm@gmail.com', 'Ronal Josue Fernandez', '2147483647', 'Hola, estamos en Santa Maria Huila, desarrollando Software.'),
+(11, 'rubielasanchez504@gmail.com', 'David Santiago Giron Vera', '2147483647', 'Un saludo David, estamos en el Eugenio Ferro Falla Programando con PHP y PHPMailer.'),
+(12, 'cadenaolmoscristianmatias@gmail.com', 'CRISTIAN MATIAS CADENA OLMO', '2147483647', 'Un saludo, estamos en el Ricardo Borrero, programando en JavaScript'),
+(13, 'yormancollocardenas@gmail.com', 'Yorman Collo Cardenas', '3114593374', 'Hola Yorman estamos en Campoalegre Huila con el Sena, programando en PHP.');
 
 -- --------------------------------------------------------
 
@@ -155,6 +179,13 @@ INSERT INTO `usuarios` (`id_users`, `usuario_users`, `contrasena_users`) VALUES
 --
 
 --
+-- Indices de la tabla `asistencia`
+--
+ALTER TABLE `asistencia`
+  ADD PRIMARY KEY (`id_asistencia`),
+  ADD UNIQUE KEY `documento_estudiante` (`documento_asistencia`);
+
+--
 -- Indices de la tabla `contacto`
 --
 ALTER TABLE `contacto`
@@ -189,10 +220,16 @@ ALTER TABLE `usuarios`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `asistencia`
+--
+ALTER TABLE `asistencia`
+  MODIFY `id_asistencia` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `contacto`
 --
 ALTER TABLE `contacto`
-  MODIFY `id_contacto` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_contacto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `eventos`
@@ -204,7 +241,7 @@ ALTER TABLE `eventos`
 -- AUTO_INCREMENT de la tabla `formulario_contacto`
 --
 ALTER TABLE `formulario_contacto`
-  MODIFY `id_formulario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_formulario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `inicio`
