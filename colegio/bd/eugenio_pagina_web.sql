@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-09-2026 a las 17:10:00
+-- Tiempo de generación: 24-09-2026 a las 17:36:31
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -123,6 +123,22 @@ INSERT INTO `formulario_contacto` (`id_formulario`, `correo_formulario`, `nombre
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `inasistencia`
+--
+
+CREATE TABLE `inasistencia` (
+  `id_inasistencia` int(11) NOT NULL,
+  `documento_inasistencia` int(11) NOT NULL,
+  `nombre_inasistencia` varchar(100) NOT NULL,
+  `telefono_inasistencia` bigint(13) NOT NULL,
+  `grado_inasistencia` varchar(20) NOT NULL,
+  `jornada_inasistencia` varchar(20) NOT NULL,
+  `fecha_inasistencia` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `inicio`
 --
 
@@ -204,6 +220,13 @@ ALTER TABLE `formulario_contacto`
   ADD PRIMARY KEY (`id_formulario`);
 
 --
+-- Indices de la tabla `inasistencia`
+--
+ALTER TABLE `inasistencia`
+  ADD PRIMARY KEY (`id_inasistencia`),
+  ADD UNIQUE KEY `estudiante_inasistencia` (`documento_inasistencia`);
+
+--
 -- Indices de la tabla `inicio`
 --
 ALTER TABLE `inicio`
@@ -242,6 +265,12 @@ ALTER TABLE `eventos`
 --
 ALTER TABLE `formulario_contacto`
   MODIFY `id_formulario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT de la tabla `inasistencia`
+--
+ALTER TABLE `inasistencia`
+  MODIFY `id_inasistencia` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `inicio`
