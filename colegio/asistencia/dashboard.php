@@ -2,167 +2,158 @@
 
 require_once __DIR__ . "/../auth/sesion.php";
 require_once __DIR__ . "/conexion.php";
-require_once __DIR__ . "/funciones.php";
+require_once __DIR__ . "/inasistencia_datos.php";
 
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Pragma: no-cache");
 
 if (empty($_SESSION["usuario_id"])) {
-    header("Location: ./contacto.php");
+    header("Location: ../inicio/index.php");
     exit();
 }
 
-// Campos de la tabla `contacto` que se pueden editar desde este panel
-$campos = [
-    "banner_contacto"   => "Imagen del banner",
-    "titulo-1-contacto" => "Mapa - título",
-    "map-url-contacto"  => "Mapa - URL de Google Maps (enlace embed o el código iframe completo)",
+// Codigos de grado admitidos: 601-603, 701-703, ..., 1101-1103
+$gradosValidos = [];
+for ($g = 6; $g <= 11; $g++) {
+    for ($s = 1; $s <= 3; $s++) {
+        $gradosValidos[] = $g . "0" . $s;
+    }
+}
+
+$jornadasValidas = ["Mañana", "Tarde"];
+
+// Conteo por grado y jornada (se inicializa en 0 para mostrar siempre los 18 grados)
+$conteoPorGrado = array_fill_keys($gradosValidos, ["Mañana" => 0, "Tarde" => 0]);
+
+$resultado = $mysqli->query(
+    "SELECT grado_asistencia, jornada_asistencia, COUNT(*) AS total
+     FROM asistencia
+     GROUP BY grado_asistencia, jornada_asistencia"
+);
+while ($fila = $resultado->fetch_assoc()) {
+    $grado = $fila["grado_asistencia"];
+    $jornada = $fila["jornada_asistencia"];
+    if (isset($conteoPorGrado[$grado]) && in_array($jornada, $jornadasValidas, true)) {
+        $conteoPorGrado[$grado][$jornada] += (int) $fila["total"];
+    }
+}
+
+// Totales por grado general (6 a 11), sumando sus tres secciones
+$totalesPorGradoBase = array_fill_keys(range(6, 11), 0);
+foreach ($conteoPorGrado as $grado => $jornadas) {
+    $base = intdiv((int) $grado, 100);
+    if (isset($totalesPorGradoBase[$base])) {
+        $totalesPorGradoBase[$base] += array_sum($jornadas);
+    }
+}
+
+$totalGeneral = array_sum(array_map("array_sum", $conteoPorGrado));
+$totalManana = array_sum(array_column($conteoPorGrado, "Mañana"));
+$totalTarde = array_sum(array_column($conteoPorGrado, "Tarde"));
+$maximoPorGradoBase = max(1, max($totalesPorGradoBase));
+
+// Filtros de la seccion de inasistencias (grado, jornada y rango de fechas).
+// Estos filtros son independientes de los de arriba (asistencia) y controlan
+// las tarjetas, la tabla y los tres graficos de esta seccion.
+$filtroInasistencia = filtrarInasistencia($mysqli, $_GET);
+$registrosInasistencia = $filtroInasistencia["registros"];
+$filtroGradoInasistencia = $filtroInasistencia["grado"];
+$filtroJornadaInasistencia = $filtroInasistencia["jornada"];
+$filtroFechaDesde = $filtroInasistencia["fechaDesde"];
+$filtroFechaHasta = $filtroInasistencia["fechaHasta"];
+
+// Conteo de inasistencias por grado y jornada, y por estudiante, a partir de
+// los registros ya filtrados (asi las tarjetas, la tabla y los graficos
+// siempre coinciden con el mismo filtro).
+$conteoInasistenciaPorGrado = array_fill_keys($gradosValidos, ["Mañana" => 0, "Tarde" => 0]);
+$conteoPorEstudiante = [];
+
+foreach ($registrosInasistencia as $registro) {
+    $grado = $registro["grado_inasistencia"];
+    $jornada = $registro["jornada_inasistencia"];
+    if (isset($conteoInasistenciaPorGrado[$grado]) && in_array($jornada, $jornadasValidas, true)) {
+        $conteoInasistenciaPorGrado[$grado][$jornada]++;
+    }
+
+    $documento = (string) $registro["documento_inasistencia"];
+    if (!isset($conteoPorEstudiante[$documento])) {
+        $conteoPorEstudiante[$documento] = [
+            "nombre"  => $registro["nombre_inasistencia"],
+            "grado"   => $grado,
+            "jornada" => $jornada,
+            "total"   => 0,
+        ];
+    }
+    $conteoPorEstudiante[$documento]["total"]++;
+}
+
+// Grados ordenados de mayor a menor numero de inasistencias (para el grafico de ranking)
+$conteoInasistenciaOrdenado = $conteoInasistenciaPorGrado;
+uasort($conteoInasistenciaOrdenado, fn($a, $b) => array_sum($b) <=> array_sum($a));
+
+// Top 10 estudiantes con mas inasistencias, segun los filtros activos
+$rankingEstudiantes = array_values($conteoPorEstudiante);
+usort($rankingEstudiantes, fn($a, $b) => $b["total"] <=> $a["total"]);
+$topEstudiantes = array_slice($rankingEstudiantes, 0, 10);
+
+$totalInasistencias = array_sum(array_map("array_sum", $conteoInasistenciaPorGrado));
+$totalInasistenciaManana = array_sum(array_column($conteoInasistenciaPorGrado, "Mañana"));
+$totalInasistenciaTarde = array_sum(array_column($conteoInasistenciaPorGrado, "Tarde"));
+$porcentajeInasistencia = $totalGeneral > 0 ? round($totalInasistencias / $totalGeneral * 100, 1) : 0;
+
+if ($totalInasistencias === 0) {
+    $jornadaConMasInasistencias = "";
+} elseif ($totalInasistenciaManana === $totalInasistenciaTarde) {
+    $jornadaConMasInasistencias = "Mañana y Tarde (empatadas)";
+} else {
+    $jornadaConMasInasistencias = $totalInasistenciaManana > $totalInasistenciaTarde ? "Mañana" : "Tarde";
+}
+
+// Datos para los graficos (Chart.js), ya listos como arreglos simples
+$datosChartJornada = [
+    "labels"  => ["Mañana", "Tarde"],
+    "valores" => [$totalInasistenciaManana, $totalInasistenciaTarde],
 ];
 
-$textareas = ["map-url-contacto"];
+$datosChartGrado = [
+    "labels" => array_keys($conteoInasistenciaOrdenado),
+    "manana" => array_column($conteoInasistenciaOrdenado, "Mañana"),
+    "tarde"  => array_column($conteoInasistenciaOrdenado, "Tarde"),
+];
 
-// Campos que se guardan como archivos de imagen dentro de img-contacto
-$camposImagen = ["banner_contacto"];
+$datosChartEstudiantes = [
+    "labels"  => array_map(
+        fn($estudiante) => $estudiante["nombre"] . " (" . $estudiante["grado"] . " · " . $estudiante["jornada"] . ")",
+        $topEstudiantes
+    ),
+    "valores" => array_map(fn($estudiante) => $estudiante["total"], $topEstudiantes),
+];
 
-// Longitud maxima de cada columna varchar de la tabla
-$longitudMaxima = ["banner_contacto" => 150, "titulo-1-contacto" => 100];
-
-define("CARPETA_IMAGENES_CONTACTO", __DIR__ . "/img-contacto/");
-
-function guardarImagenContacto(array $archivo): string
+function texto(string $valor): string
 {
-    $extensionesPermitidas = ["jpg" => "image/jpeg", "jpeg" => "image/jpeg", "png" => "image/png", "webp" => "image/webp", "gif" => "image/gif"];
-    $extension = strtolower(pathinfo($archivo["name"], PATHINFO_EXTENSION));
-
-    if (!array_key_exists($extension, $extensionesPermitidas)) {
-        throw new RuntimeException("Formato de imagen no permitido (usa jpg, png, webp o gif).");
-    }
-
-    if ($archivo["size"] > 5 * 1024 * 1024) {
-        throw new RuntimeException("La imagen supera el tamaño máximo permitido de 5 MB.");
-    }
-
-    $tipoMime = mime_content_type($archivo["tmp_name"]);
-    if ($tipoMime !== $extensionesPermitidas[$extension]) {
-        throw new RuntimeException("El archivo subido no es una imagen válida.");
-    }
-
-    $nombreArchivo = "contacto-" . uniqid() . "." . $extension;
-
-    if (!move_uploaded_file($archivo["tmp_name"], CARPETA_IMAGENES_CONTACTO . $nombreArchivo)) {
-        throw new RuntimeException("No se pudo guardar la imagen en la carpeta img-contacto.");
-    }
-
-    return "./img-contacto/" . $nombreArchivo;
+    return htmlspecialchars($valor, ENT_QUOTES, "UTF-8");
 }
 
-$mensaje = "";
-
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $accion = $_POST["accion"] ?? "";
-
-    if ($accion === "guardar" || $accion === "editar") {
-        try {
-            $valores = [];
-            foreach (array_keys($campos) as $campo) {
-                $recibido = $_POST[$campo] ?? "";
-                $actual = $_POST["actual_$campo"] ?? "";
-                if (!is_string($recibido) || !is_string($actual)) {
-                    throw new RuntimeException("Los datos enviados no son válidos.");
-                }
-
-                if (in_array($campo, $camposImagen, true)) {
-                    $rutaImagen = trim($actual);
-                    // Solo se acepta una ruta que ya este dentro de img-contacto
-                    if ($rutaImagen !== "" && !preg_match('#^\./img-contacto/[A-Za-z0-9._-]+$#', $rutaImagen)) {
-                        $rutaImagen = "";
-                    }
-                    if (isset($_FILES[$campo]) && $_FILES[$campo]["error"] === UPLOAD_ERR_OK) {
-                        $rutaImagen = guardarImagenContacto($_FILES[$campo]);
-                    }
-                    if ($rutaImagen === "") {
-                        throw new RuntimeException("Debes seleccionar una imagen para el banner.");
-                    }
-                    $valores[$campo] = $rutaImagen;
-                } elseif ($campo === "map-url-contacto") {
-                    $urlMapa = urlMapaValida($recibido);
-                    if ($urlMapa === "") {
-                        throw new RuntimeException("La URL del mapa debe ser un mapa embebido de Google Maps (https://www.google.com/maps/embed?...).");
-                    }
-                    $valores[$campo] = $urlMapa;
-                } else {
-                    $texto = trim($recibido);
-                    if ($texto === "") {
-                        throw new RuntimeException("Completa todos los campos.");
-                    }
-                    if (mb_strlen($texto) > ($longitudMaxima[$campo] ?? PHP_INT_MAX)) {
-                        throw new RuntimeException("El campo \"{$campos[$campo]}\" admite máximo {$longitudMaxima[$campo]} caracteres.");
-                    }
-                    $valores[$campo] = $texto;
-                }
-            }
-        } catch (RuntimeException $error) {
-            $mensaje = $error->getMessage();
-            $valores = null;
-        }
-
-        if ($valores !== null) {
-            if ($accion === "guardar") {
-                $columnas = implode(", ", array_map(fn($c) => "`$c`", array_keys($campos)));
-                $marcadores = implode(", ", array_fill(0, count($campos), "?"));
-                $tipos = str_repeat("s", count($campos));
-
-                $stmt = $mysqli->prepare("INSERT INTO contacto ($columnas) VALUES ($marcadores)");
-                $stmt->bind_param($tipos, ...array_values($valores));
-                $stmt->execute();
-                $stmt->close();
-                $mensaje = "El contenido de contacto se creó correctamente.";
-            } else {
-                $id_contacto = (int) ($_POST["id_contacto"] ?? 0);
-                $asignaciones = implode(", ", array_map(fn($c) => "`$c` = ?", array_keys($campos)));
-                $tipos = str_repeat("s", count($campos)) . "i";
-                $parametros = array_values($valores);
-                $parametros[] = $id_contacto;
-
-                $stmt = $mysqli->prepare("UPDATE contacto SET $asignaciones WHERE id_contacto = ?");
-                $stmt->bind_param($tipos, ...$parametros);
-                $stmt->execute();
-                $stmt->close();
-                $mensaje = "El contenido de contacto se actualizó correctamente.";
-            }
-        }
-    } elseif ($accion === "eliminar") {
-        $id_contacto = (int) ($_POST["id_contacto"] ?? 0);
-        $stmt = $mysqli->prepare("DELETE FROM contacto WHERE id_contacto = ?");
-        $stmt->bind_param("i", $id_contacto);
-        $stmt->execute();
-        $stmt->close();
-        $mensaje = "El contenido de contacto se eliminó correctamente.";
-    }
-}
-
-$resultado = $mysqli->query("SELECT * FROM contacto ORDER BY id_contacto DESC LIMIT 1");
-$contacto = $resultado ? $resultado->fetch_assoc() : null;
-
-function valor_campo(?array $contacto, string $campo): string
+// Serializa a JSON de forma segura para incrustar dentro de un <script>
+function jsonSeguro($valor): string
 {
-    return htmlspecialchars($contacto[$campo] ?? "", ENT_QUOTES, "UTF-8");
+    return json_encode($valor, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE);
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editor de contenido - Contacto | Eugenio Ferro Falla</title>
+    <title>Dashboard - Asistencia | Eugenio Ferro Falla</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Nunito+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../bootstrap-5.3.8-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link rel="stylesheet" href="./contacto.css">
+    <link rel="stylesheet" href="./asistencia.css">
     <link rel="stylesheet" href="./cuadricula.css">
-    <link rel="icon" href="./img-contacto/logo.jpeg" type="image/x-icon">
+    <link rel="icon" href="../inicio/img-ini/logo.jpeg" type="image/x-icon">
 </head>
 <body>
 
@@ -171,7 +162,7 @@ function valor_campo(?array $contacto, string $campo): string
     <div class="row g-0 align-items-stretch hero-row">
       <div class="col-12">
         <div class="hero-banner-card">
-          <img src="<?= valor_campo($contacto, "banner_contacto") ?: BANNER_CONTACTO_POR_DEFECTO ?>" class="banner" alt="Banner principal">
+          <img src="../inicio/img-ini/banner.png" class="banner" alt="Banner principal">
         </div>
       </div>
     </div>
@@ -196,7 +187,15 @@ function valor_campo(?array $contacto, string $campo): string
             <a class="nav-link" href="../eventos/eventos-formulario.php">Eventos</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="../contacto/contacto-formulario.php">Contacto</a>
+            <a class="nav-link" href="../contacto/contacto-formulario.php">Contacto</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-current="page">Asistencia</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="./asistencia.php">Asistencia</a></li>
+              <li><a class="dropdown-item" href="./inasistencia.php">Inasistencia</a></li>
+              <li><a class="dropdown-item active" aria-current="page" href="./dashboard.php">Dashboard</a></li>
+            </ul>
           </li>
         </ul>
 
@@ -211,58 +210,223 @@ function valor_campo(?array $contacto, string $campo): string
   <div class="container">
 <!--Inicio encabezado del editor-->
     <div class="editor-header-card mb-4">
-      <h1>Editor de contenido - Página de contacto</h1>
-      <p>Administra la información almacenada en la tabla <strong>contacto</strong> de la base de datos <strong>eugenio_pagina_web</strong>. Estos datos alimentan las variables PHP que muestra <code>contacto.php</code>.</p>
+      <h1>Dashboard - Asistencia</h1>
+      <p>Resumen de los registros almacenados en la tabla <strong>asistencia</strong> de la base de datos <strong>eugenio_pagina_web</strong>, por grado y por jornada.</p>
     </div>
 <!--Fin encabezado del editor-->
 
-    <?php if ($mensaje !== ""): ?>
-      <div class="alert editor-alert mb-4" role="alert"><?= htmlspecialchars($mensaje, ENT_QUOTES, "UTF-8") ?></div>
-    <?php endif; ?>
-
-    <?php if (!$contacto): ?>
-      <!--Inicio estado vacio-->
-      <div class="editor-empty-card">
-        <p class="mb-3">Todavía no hay contenido registrado para la página de contacto.</p>
-        <button class="btn btn-crear" type="button" data-bs-toggle="modal" data-bs-target="#modalContenido">Crear contenido</button>
-      </div>
-      <!--Fin estado vacio-->
-    <?php else: ?>
-      <!--Inicio tarjeta de contenido-->
-      <div class="editor-content-card p-4 mb-4">
-        <div class="row gy-4">
-          <div class="col-12 col-md-6">
-            <div class="editor-section-title">Banner</div>
-            <div class="editor-field-label">Imagen del banner</div>
-            <div class="editor-field-value mb-2"><?= valor_campo($contacto, "banner_contacto") ?></div>
-            <?php if (valor_campo($contacto, "banner_contacto") !== ""): ?>
-              <img src="<?= valor_campo($contacto, "banner_contacto") ?>" class="editor-thumb" alt="Vista previa del banner">
-            <?php endif; ?>
-          </div>
-          <div class="col-12 col-md-6">
-            <div class="editor-section-title">Mapa</div>
-            <div class="editor-field-label">Título</div>
-            <div class="editor-field-value mb-2"><?= valor_campo($contacto, "titulo-1-contacto") ?></div>
-            <div class="editor-field-label">URL del mapa</div>
-            <div class="editor-field-value mb-2"><?= valor_campo($contacto, "map-url-contacto") ?></div>
-          </div>
-        </div>
-
-        <div class="editor-actions d-flex gap-2 justify-content-end mt-4">
-          <button class="btn btn-editar" type="button" data-bs-toggle="modal" data-bs-target="#modalContenido">
-            <i class="fa-solid fa-pen-to-square"></i> Editar
-          </button>
-          <form method="post" onsubmit="return confirm('¿Seguro que deseas eliminar el contenido de contacto?');">
-            <input type="hidden" name="accion" value="eliminar">
-            <input type="hidden" name="id_contacto" value="<?= (int) $contacto["id_contacto"] ?>">
-            <button class="btn btn-eliminar" type="submit">
-              <i class="fa-solid fa-trash"></i> Eliminar
-            </button>
-          </form>
+    <!--Inicio tarjetas de estadisticas-->
+    <div class="row gy-4 mb-4">
+      <div class="col-12 col-md-4">
+        <div class="stat-card">
+          <div class="stat-valor"><?= $totalGeneral ?></div>
+          <div class="stat-etiqueta">Total de registros</div>
         </div>
       </div>
-      <!--Fin tarjeta de contenido-->
-    <?php endif; ?>
+      <div class="col-6 col-md-4">
+        <div class="stat-card">
+          <div class="stat-valor"><?= $totalManana ?></div>
+          <div class="stat-etiqueta">Jornada mañana</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4">
+        <div class="stat-card">
+          <div class="stat-valor"><?= $totalTarde ?></div>
+          <div class="stat-etiqueta">Jornada tarde</div>
+        </div>
+      </div>
+    </div>
+    <!--Fin tarjetas de estadisticas-->
+
+    <!--Inicio filtros de inasistencia-->
+    <div class="editor-content-card p-4 mb-4">
+      <div class="editor-section-title mb-3">Inasistencias — filtros</div>
+      <form method="get" class="row g-2 align-items-end">
+        <div class="col-6 col-md-2">
+          <label class="form-label login-label" for="dash-grado">Grado</label>
+          <select class="form-select login-input" id="dash-grado" name="grado">
+            <option value="">Todos</option>
+            <?php foreach ($gradosValidos as $codigo): ?>
+              <option value="<?= $codigo ?>" <?= $filtroGradoInasistencia === $codigo ? "selected" : "" ?>><?= $codigo ?></option>
+            <?php endforeach; ?>
+          </select>
+        </div>
+        <div class="col-6 col-md-2">
+          <label class="form-label login-label" for="dash-jornada">Jornada</label>
+          <select class="form-select login-input" id="dash-jornada" name="jornada">
+            <option value="">Todas</option>
+            <?php foreach ($jornadasValidas as $jornadaOpcion): ?>
+              <option value="<?= $jornadaOpcion ?>" <?= $filtroJornadaInasistencia === $jornadaOpcion ? "selected" : "" ?>><?= $jornadaOpcion ?></option>
+            <?php endforeach; ?>
+          </select>
+        </div>
+        <div class="col-6 col-md-3">
+          <label class="form-label login-label" for="dash-fecha-desde">Desde</label>
+          <input type="date" class="form-control login-input" id="dash-fecha-desde" name="fecha_desde" value="<?= texto($filtroFechaDesde) ?>">
+        </div>
+        <div class="col-6 col-md-3">
+          <label class="form-label login-label" for="dash-fecha-hasta">Hasta</label>
+          <input type="date" class="form-control login-input" id="dash-fecha-hasta" name="fecha_hasta" value="<?= texto($filtroFechaHasta) ?>">
+        </div>
+        <div class="col-12 col-md-2 d-flex gap-2">
+          <button type="submit" class="btn login-submit-btn flex-fill">Filtrar</button>
+          <a href="./dashboard.php" class="btn btn-outline-light flex-fill">Limpiar</a>
+        </div>
+      </form>
+      <p class="resumen-asistencia mt-3 mb-0">Estos filtros controlan las tarjetas, los gráficos y la tabla de inasistencias de aquí abajo.</p>
+    </div>
+    <!--Fin filtros de inasistencia-->
+
+    <!--Inicio tarjetas de inasistencia-->
+    <div class="row gy-4 mb-4">
+      <div class="col-12 col-md-4">
+        <div class="stat-card stat-card--alerta">
+          <div class="stat-valor"><?= $totalInasistencias ?></div>
+          <div class="stat-etiqueta">Total inasistencias</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4">
+        <div class="stat-card stat-card--alerta">
+          <div class="stat-valor"><?= $totalInasistenciaManana ?></div>
+          <div class="stat-etiqueta">Inasistencia mañana</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4">
+        <div class="stat-card stat-card--alerta">
+          <div class="stat-valor"><?= $totalInasistenciaTarde ?></div>
+          <div class="stat-etiqueta">Inasistencia tarde</div>
+        </div>
+      </div>
+    </div>
+    <!--Fin tarjetas de inasistencia-->
+
+    <!--Inicio grafico por grado-->
+    <div class="editor-content-card p-4 mb-4">
+      <div class="editor-section-title">Estudiantes por grado</div>
+      <?php foreach ($totalesPorGradoBase as $gradoBase => $total): ?>
+        <div class="barra-grado">
+          <div class="barra-etiqueta">Grado <?= $gradoBase ?>°</div>
+          <div class="barra-pista">
+            <div class="barra-relleno" style="width: <?= (int) round($total / $maximoPorGradoBase * 100) ?>%;"></div>
+          </div>
+          <div class="barra-valor"><?= $total ?></div>
+        </div>
+      <?php endforeach; ?>
+    </div>
+    <!--Fin grafico por grado-->
+
+    <!--Inicio tabla detallada-->
+    <div class="editor-content-card p-4 mb-4">
+      <div class="editor-section-title">Detalle por grado y jornada</div>
+      <div class="table-responsive">
+        <table class="table table-borderless tabla-asistencia align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Grado</th>
+              <th>Mañana</th>
+              <th>Tarde</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($conteoPorGrado as $grado => $jornadas): ?>
+              <tr>
+                <td><?= texto($grado) ?></td>
+                <td><?= $jornadas["Mañana"] ?></td>
+                <td><?= $jornadas["Tarde"] ?></td>
+                <td><strong><?= array_sum($jornadas) ?></strong></td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td><strong>Total</strong></td>
+              <td><strong><?= $totalManana ?></strong></td>
+              <td><strong><?= $totalTarde ?></strong></td>
+              <td><strong><?= $totalGeneral ?></strong></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+    <!--Fin tabla detallada-->
+
+    <!--Inicio tabla de inasistencias-->
+    <div class="editor-content-card p-4 mb-4">
+      <div class="editor-section-title">Detalle de inasistencias por grado y jornada</div>
+      <div class="table-responsive">
+        <table class="table table-borderless tabla-asistencia align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Grado</th>
+              <th>Mañana</th>
+              <th>Tarde</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($conteoInasistenciaPorGrado as $grado => $jornadas): ?>
+              <tr>
+                <td><?= texto($grado) ?></td>
+                <td><?= $jornadas["Mañana"] ?></td>
+                <td><?= $jornadas["Tarde"] ?></td>
+                <td><strong><?= array_sum($jornadas) ?></strong></td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td><strong>Total</strong></td>
+              <td><strong><?= $totalInasistenciaManana ?></strong></td>
+              <td><strong><?= $totalInasistenciaTarde ?></strong></td>
+              <td><strong><?= $totalInasistencias ?></strong></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <p class="resumen-asistencia mt-3 mb-0">Tasa de inasistencia: <?= $porcentajeInasistencia ?>% del total de estudiantes registrados.</p>
+    </div>
+    <!--Fin tabla de inasistencias-->
+
+    <!--Inicio grafico jornada con mas inasistencias-->
+    <div class="editor-content-card p-4 mb-4">
+      <div class="editor-section-title">¿Qué jornada tiene más inasistencias?</div>
+      <?php if ($totalInasistencias > 0): ?>
+        <p class="resumen-asistencia">La jornada con más inasistencias es <strong><?= texto($jornadaConMasInasistencias) ?></strong> (<?= $totalInasistenciaManana ?> en la mañana frente a <?= $totalInasistenciaTarde ?> en la tarde).</p>
+      <?php else: ?>
+        <p class="resumen-asistencia">No hay inasistencias registradas con los filtros seleccionados.</p>
+      <?php endif; ?>
+      <div class="grafico-envoltorio">
+        <canvas id="graficoJornada" aria-label="Comparación de inasistencias entre la jornada mañana y la jornada tarde"></canvas>
+      </div>
+    </div>
+    <!--Fin grafico jornada con mas inasistencias-->
+
+    <!--Inicio grafico grado con mas inasistencias-->
+    <div class="editor-content-card p-4 mb-4">
+      <div class="editor-section-title">¿Qué grado tiene más inasistencias?</div>
+      <p class="resumen-asistencia">Grados ordenados de mayor a menor número de inasistencias; el color de cada barra indica la jornada (dorado = mañana, azul = tarde).</p>
+      <div class="grafico-envoltorio grafico-envoltorio--alto">
+        <canvas id="graficoGrado" aria-label="Inasistencias por grado, separadas por jornada mañana y tarde"></canvas>
+      </div>
+    </div>
+    <!--Fin grafico grado con mas inasistencias-->
+
+    <!--Inicio grafico estudiantes con mas inasistencias-->
+    <div class="editor-content-card p-4 mb-4">
+      <div class="editor-section-title">Estudiantes con más inasistencias</div>
+      <p class="resumen-asistencia">Los estudiantes con más inasistencias según los filtros activos; entre paréntesis se indica su grado y su jornada.</p>
+      <?php if ($topEstudiantes === []): ?>
+        <div class="editor-empty-card">
+          <p class="mb-0">No hay estudiantes para mostrar con los filtros seleccionados.</p>
+        </div>
+      <?php else: ?>
+        <div class="grafico-envoltorio grafico-envoltorio--alto">
+          <canvas id="graficoEstudiantes" aria-label="Estudiantes con más inasistencias, con su grado y jornada"></canvas>
+        </div>
+      <?php endif; ?>
+    </div>
+    <!--Fin grafico estudiantes con mas inasistencias-->
   </div>
 
   <br>
@@ -327,7 +491,7 @@ function valor_campo(?array $contacto, string $campo): string
         <div class="modal-footer" style="border-top: 1px solid rgba(185, 227, 240, 0.6); justify-content: center;">
           <button type="button" class="btn" data-bs-dismiss="modal" style="color: #f5f9fb;">Cancelar</button>
           <form method="post" action="../auth/logout.php">
-            <input type="hidden" name="origen" value="contacto">
+            <input type="hidden" name="origen" value="inicio">
             <button type="submit" class="btn login-submit-btn">Cerrar sesión</button>
           </form>
         </div>
@@ -336,50 +500,116 @@ function valor_campo(?array $contacto, string $campo): string
   </div>
 <!--Fin modal cerrar sesion-->
 
-<!--Inicio modal editar/crear contenido-->
-  <div class="modal fade" id="modalContenido" tabindex="-1" aria-labelledby="modalContenidoLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
-      <div class="modal-content login-modal">
-        <div class="modal-header login-modal-header">
-          <h5 class="modal-title" id="modalContenidoLabel"><?= $contacto ? "Editar contenido de contacto" : "Crear contenido de contacto" ?></h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-        <form method="post" enctype="multipart/form-data">
-          <div class="modal-body">
-            <input type="hidden" name="accion" value="<?= $contacto ? "editar" : "guardar" ?>">
-            <?php if ($contacto): ?>
-              <input type="hidden" name="id_contacto" value="<?= (int) $contacto["id_contacto"] ?>">
-            <?php endif; ?>
-
-            <div class="row g-3">
-              <?php foreach ($campos as $campo => $etiqueta): ?>
-                <div class="col-12 <?= in_array($campo, $textareas, true) ? "" : "col-md-6" ?>">
-                  <label for="campo-<?= htmlspecialchars($campo) ?>" class="form-label login-label"><?= htmlspecialchars($etiqueta, ENT_QUOTES, "UTF-8") ?></label>
-                  <?php if (in_array($campo, $camposImagen, true)): ?>
-                    <input type="file" class="form-control login-input" id="campo-<?= htmlspecialchars($campo) ?>" name="<?= htmlspecialchars($campo) ?>" accept="image/png, image/jpeg, image/webp, image/gif" <?= valor_campo($contacto, $campo) === "" ? "required" : "" ?>>
-                    <input type="hidden" name="actual_<?= htmlspecialchars($campo) ?>" value="<?= valor_campo($contacto, $campo) ?>">
-                    <div class="form-text">Se guarda en la carpeta img-contacto. Actual: <?= valor_campo($contacto, $campo) ?: "sin imagen" ?></div>
-                  <?php elseif (in_array($campo, $textareas, true)): ?>
-                    <textarea class="form-control login-input" id="campo-<?= htmlspecialchars($campo) ?>" name="<?= htmlspecialchars($campo) ?>" rows="4" required><?= valor_campo($contacto, $campo) ?></textarea>
-                    <div class="form-text">En Google Maps: Compartir → Insertar un mapa → copia el código y pégalo aquí.</div>
-                  <?php else: ?>
-                    <input type="text" class="form-control login-input" id="campo-<?= htmlspecialchars($campo) ?>" name="<?= htmlspecialchars($campo) ?>" value="<?= valor_campo($contacto, $campo) ?>" maxlength="<?= (int) ($longitudMaxima[$campo] ?? 255) ?>" required>
-                  <?php endif; ?>
-                </div>
-              <?php endforeach; ?>
-            </div>
-          </div>
-          <div class="modal-footer" style="border-top: 1px solid rgba(185, 227, 240, 0.6);">
-            <button type="button" class="btn" data-bs-dismiss="modal" style="color: #f5f9fb;">Cancelar</button>
-            <button type="submit" class="btn login-submit-btn"><?= $contacto ? "Guardar cambios" : "Crear contenido" ?></button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-<!--Fin modal editar/crear contenido-->
-
   <script src="../bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
   <script src="../auth/panel.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.1/chart.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    (function () {
+      "use strict";
+
+      if (typeof Chart === "undefined") {
+        return;
+      }
+
+      // Misma paleta del sitio (dorado = mañana, azul = tarde), pensada para
+      // leerse bien sobre el fondo verde oscuro de las tarjetas del dashboard.
+      var colorManana = "#b28818";
+      var colorTarde = "#2f9bc7";
+      var colorTexto = "#f5f9fb";
+      var colorTextoSecundario = "#b9e3f0";
+      var colorGrilla = "rgba(185, 227, 240, 0.18)";
+
+      Chart.defaults.color = colorTextoSecundario;
+      Chart.defaults.font.family = "'Nunito Sans', 'Segoe UI', sans-serif";
+
+      var datosJornada = <?= jsonSeguro($datosChartJornada) ?>;
+      var datosGrado = <?= jsonSeguro($datosChartGrado) ?>;
+      var datosEstudiantes = <?= jsonSeguro($datosChartEstudiantes) ?>;
+
+      var canvasJornada = document.getElementById("graficoJornada");
+      if (canvasJornada) {
+        new Chart(canvasJornada, {
+          type: "bar",
+          data: {
+            labels: datosJornada.labels,
+            datasets: [{
+              label: "Inasistencias",
+              data: datosJornada.valores,
+              backgroundColor: [colorManana, colorTarde],
+              borderRadius: 6,
+              maxBarThickness: 70
+            }]
+          },
+          options: {
+            indexAxis: "y",
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: { callbacks: { label: function (contexto) { return " " + contexto.parsed.x + " inasistencias"; } } }
+            },
+            scales: {
+              x: { beginAtZero: true, ticks: { precision: 0, color: colorTextoSecundario }, grid: { color: colorGrilla } },
+              y: { ticks: { color: colorTexto, font: { weight: "700" } }, grid: { display: false } }
+            }
+          }
+        });
+      }
+
+      var canvasGrado = document.getElementById("graficoGrado");
+      if (canvasGrado) {
+        new Chart(canvasGrado, {
+          type: "bar",
+          data: {
+            labels: datosGrado.labels,
+            datasets: [
+              { label: "Mañana", data: datosGrado.manana, backgroundColor: colorManana, borderRadius: 4, maxBarThickness: 22 },
+              { label: "Tarde", data: datosGrado.tarde, backgroundColor: colorTarde, borderRadius: 4, maxBarThickness: 22 }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { labels: { color: colorTexto } }
+            },
+            scales: {
+              x: { ticks: { color: colorTextoSecundario }, grid: { display: false } },
+              y: { beginAtZero: true, ticks: { precision: 0, color: colorTextoSecundario }, grid: { color: colorGrilla } }
+            }
+          }
+        });
+      }
+
+      var canvasEstudiantes = document.getElementById("graficoEstudiantes");
+      if (canvasEstudiantes) {
+        new Chart(canvasEstudiantes, {
+          type: "bar",
+          data: {
+            labels: datosEstudiantes.labels,
+            datasets: [{
+              label: "Inasistencias",
+              data: datosEstudiantes.valores,
+              backgroundColor: colorManana,
+              borderRadius: 4,
+              maxBarThickness: 22
+            }]
+          },
+          options: {
+            indexAxis: "y",
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false }
+            },
+            scales: {
+              x: { beginAtZero: true, ticks: { precision: 0, color: colorTextoSecundario }, grid: { color: colorGrilla } },
+              y: { ticks: { color: colorTexto }, grid: { display: false } }
+            }
+          }
+        });
+      }
+    })();
+  </script>
 </body>
 </html>

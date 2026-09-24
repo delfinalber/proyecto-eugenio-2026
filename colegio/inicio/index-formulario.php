@@ -182,8 +182,16 @@ function valor_campo(?array $inicio, string $campo): string
           <li class="nav-item">
             <a class="nav-link" href="../contacto/contacto-formulario.php">Contacto</a>
           </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Asistencia</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="../asistencia/asistencia.php">Asistencia</a></li>
+              <li><a class="dropdown-item" href="../asistencia/inasistencia.php">Inasistencia</a></li>
+              <li><a class="dropdown-item" href="../asistencia/dashboard.php">Dashboard</a></li>
+            </ul>
+          </li>
         </ul>
-        
+
         <button class="btn btn-outline-success" type="button" data-bs-toggle="modal" data-bs-target="#logoutModal">Cerrar Sesión</button>
       </div>
     </div>

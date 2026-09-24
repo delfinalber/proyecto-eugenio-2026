@@ -1,0 +1,163 @@
+/*
+ * Copyright (c) 2026 . All rights reserved.
+ * Hoja de estilos del reporte imprimible de inasistencias: diseño claro y
+ * sobrio (papel blanco, texto negro) pensado para imprimir o guardar como PDF.
+ */
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	padding: 24px 16px;
+	background: #e9e9e9;
+	font-family: "Segoe UI", Arial, sans-serif;
+	color: #1a1a1a;
+}
+
+.barra-acciones {
+	max-width: 900px;
+	margin: 0 auto 16px;
+	text-align: right;
+}
+
+.boton-imprimir {
+	padding: 0.55rem 1.4rem;
+	border: 1px solid #0b4f43;
+	background: #0b4f43;
+	color: #ffffff;
+	border-radius: 6px;
+	cursor: pointer;
+	font-weight: 700;
+	font-size: 0.95rem;
+}
+
+.boton-imprimir:hover {
+	background: #0a7a66;
+}
+
+.hoja {
+	max-width: 900px;
+	margin: 0 auto;
+	background: #ffffff;
+	padding: 32px 36px;
+	box-shadow: 0 0 14px rgba(0, 0, 0, 0.15);
+}
+
+.encabezado {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
+
+.encabezado .logo {
+	width: 86px;
+	height: 86px;
+	object-fit: cover;
+	border-radius: 10px;
+	border: 1px solid #ccc;
+}
+
+.datos-institucion h1 {
+	margin: 0 0 4px;
+	font-size: 1.25rem;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 0.3px;
+	color: #0b4f43;
+}
+
+.datos-institucion .subtitulo {
+	margin: 0 0 2px;
+	font-size: 0.95rem;
+	font-weight: 700;
+	color: #333;
+}
+
+.datos-institucion p {
+	margin: 2px 0;
+	font-size: 0.9rem;
+	color: #333;
+}
+
+.linea-separadora {
+	margin: 20px 0;
+	border: none;
+	border-top: 3px solid #0b4f43;
+}
+
+.meta-reporte {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px 24px;
+	margin-bottom: 18px;
+	font-size: 0.88rem;
+}
+
+.meta-reporte p {
+	margin: 0;
+}
+
+.tabla-reporte {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.84rem;
+}
+
+.tabla-reporte th,
+.tabla-reporte td {
+	border: 1px solid #999;
+	padding: 6px 8px;
+	text-align: left;
+}
+
+.tabla-reporte thead th {
+	background: #0b4f43;
+	color: #ffffff;
+	text-transform: uppercase;
+	font-size: 0.74rem;
+	letter-spacing: 0.3px;
+}
+
+.tabla-reporte tbody tr:nth-child(even) {
+	background: #f4f4f4;
+}
+
+.sin-datos {
+	text-align: center;
+	font-style: italic;
+	color: #666;
+	padding: 18px !important;
+}
+
+.pie-reporte {
+	margin-top: 26px;
+	padding-top: 12px;
+	border-top: 1px solid #ccc;
+	font-size: 0.76rem;
+	color: #555;
+	text-align: center;
+}
+
+@media print {
+	body {
+		background: #ffffff;
+		padding: 0;
+	}
+
+	.barra-acciones {
+		display: none;
+	}
+
+	.hoja {
+		box-shadow: none;
+		max-width: 100%;
+		padding: 0;
+		margin: 0;
+	}
+
+	@page {
+		margin: 1.5cm;
+	}
+}
