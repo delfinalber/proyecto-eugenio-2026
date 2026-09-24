@@ -567,8 +567,8 @@ function jsonSeguro($valor): string
           data: {
             labels: datosGrado.labels,
             datasets: [
-              { label: JORNADA_MANANA, data: datosGrado.manana, backgroundColor: colorManana, borderRadius: 4, maxBarThickness: 22 },
-              { label: JORNADA_TARDE, data: datosGrado.tarde, backgroundColor: colorTarde, borderRadius: 4, maxBarThickness: 22 }
+              { label: <?= jsonSeguro(JORNADA_MANANA) ?>, data: datosGrado.manana, backgroundColor: colorManana, borderRadius: 4, maxBarThickness: 22 },
+              { label: <?= jsonSeguro(JORNADA_TARDE) ?>, data: datosGrado.tarde, backgroundColor: colorTarde, borderRadius: 4, maxBarThickness: 22 }
             ]
           },
           options: {

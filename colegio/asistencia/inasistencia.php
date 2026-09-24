@@ -12,6 +12,8 @@ if (empty($_SESSION["usuario_id"])) {
     exit();
 }
 
+$eliminadoOk = isset($_GET["eliminado"]) && $_GET["eliminado"] === "1";
+
 $filtro = filtrarInasistencia($mysqli, $_GET);
 $registros = $filtro["registros"];
 $filtroGrado = $filtro["grado"];
@@ -108,6 +110,10 @@ function texto(string $valor): string
     </div>
 <!--Fin encabezado del editor-->
 
+    <?php if ($eliminadoOk): ?>
+      <div class="alert editor-alert mb-4" role="alert">Se eliminaron todas las inasistencias correctamente.</div>
+    <?php endif; ?>
+
     <!--Inicio tarjeta de contenido-->
     <div class="editor-content-card p-4 mb-4">
       <div class="editor-section-title mb-3">Registros de inasistencia</div>
@@ -142,6 +148,9 @@ function texto(string $valor): string
           <a href="./inasistencia_imprimir.php<?= $queryImprimir !== "" ? "?$queryImprimir" : "" ?>" target="_blank" class="btn login-submit-btn flex-fill">
             <i class="fa-solid fa-print"></i> Imprimir
           </a>
+          <button type="button" class="btn btn-peligro flex-fill" data-bs-toggle="modal" data-bs-target="#modalEliminarInasistencia">
+            <i class="fa-solid fa-trash"></i> Eliminar inasistencias
+          </button>
         </div>
       </form>
       <!--Fin filtros-->
@@ -257,7 +266,54 @@ function texto(string $valor): string
   </div>
 <!--Fin modal cerrar sesion-->
 
+<!--Inicio modal eliminar inasistencias-->
+  <div class="modal fade" id="modalEliminarInasistencia" tabindex="-1" aria-labelledby="modalEliminarInasistenciaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content login-modal">
+        <div class="modal-header login-modal-header">
+          <h5 class="modal-title" id="modalEliminarInasistenciaLabel">Eliminar todas las inasistencias</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p class="mb-3" style="color: #f5f9fb;">Esta acción borrará <strong>todos</strong> los registros de la tabla <code>inasistencia</code> y no se puede deshacer. Confirma con un usuario de <strong>super_usuario</strong> para continuar.</p>
+          <form method="post" action="./eliminar_inasistencia.php" id="formularioEliminarInasistencia">
+            <div class="d-flex justify-content-end mb-2">
+              <span class="login-label" style="font-size: 0.85rem;">Tiempo restante: <strong id="tiempoRestanteEliminar">30</strong>s</span>
+            </div>
+            <div class="mb-3">
+              <label for="usuarioEliminar" class="form-label login-label">Usuario</label>
+              <input type="text" class="form-control login-input" id="usuarioEliminar" name="usuario" placeholder="Usuario de super_usuario" autocomplete="username" required>
+            </div>
+            <div class="mb-3">
+              <label for="contrasenaEliminar" class="form-label login-label">Contraseña</label>
+              <input type="password" class="form-control login-input" id="contrasenaEliminar" name="contrasena" placeholder="Contraseña" autocomplete="current-password" required>
+            </div>
+            <button type="submit" class="btn btn-peligro w-100" id="botonConfirmarEliminar">Eliminar todas las inasistencias</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+<!--Fin modal eliminar inasistencias-->
+
+<!--Inicio modal error al eliminar-->
+  <div class="modal fade" id="modalEliminarError" tabindex="-1" aria-labelledby="modalEliminarErrorLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content login-modal">
+        <div class="modal-header login-modal-header">
+          <h5 class="modal-title" id="modalEliminarErrorLabel">No se pudo eliminar</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body text-center">
+          <p class="mb-0">Usuario o contraseña incorrectos, o se agotó el tiempo. Intenta de nuevo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+<!--Fin modal error al eliminar-->
+
   <script src="../bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
   <script src="../auth/panel.js"></script>
+  <script src="./eliminar_inasistencia.js"></script>
 </body>
 </html>

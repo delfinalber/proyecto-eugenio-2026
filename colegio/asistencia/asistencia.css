@@ -375,6 +375,25 @@ a:focus {
 	border-color: #f2a7a7;
 }
 
+/* Boton de accion peligrosa (borrar todo): mismo tamaño/forma que login-submit-btn, en rojo */
+.btn-peligro {
+	background: linear-gradient(180deg, #e35d5d 0%, #c23d3d 100%);
+	border: 1px solid #e35d5d;
+	color: #ffffff;
+	font-family: "Nunito Sans", "Segoe UI", sans-serif;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 0.6px;
+}
+
+.btn-peligro:hover,
+.btn-peligro:focus {
+	background: linear-gradient(180deg, #f16b6b 0%, #d84545 100%);
+	border-color: #f16b6b;
+	color: #ffffff;
+	box-shadow: 0 0 0 0.2rem rgba(227, 93, 93, 0.35);
+}
+
 /* ===== Tabla y filtros del panel de asistencia ===== */
 
 .resumen-asistencia {
